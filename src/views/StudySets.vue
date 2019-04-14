@@ -3,21 +3,26 @@
     <div class="row justify-content-center mb-4">
       <div class="col-md-8">
         <div class="default-card white">
-          <div class="form-row">
-            <div class="form-group col-12">
-              <input id="setTitle" 
-                v-model="studySetTitle"
-                class="form-control" 
-                placeholder="New Study Set; Subject, chapter, unit">
+          <form v-on:submit.prevent="createStudySet()">
+            <div class="form-row">
+              <div class="form-group col-12">
+                <input id="setTitle" 
+                  v-model="studySetTitle"
+                  class="form-control"
+                  autocomplete="off" 
+                  placeholder="New Study Set; Subject, chapter, unit">
+              </div>
+              <div class="col-12">
+                <button type="button" class="btn primary" :disabled="newStudySetValidator || creatingStudySet">
+                  {{ creatingStudySet ? 'Creating' : 'Create' }}
+                </button>
+              </div>
             </div>
-            <div class="col-12">
-              <button type="button" class="btn primary" :disabled="newStudySetValidator">Create</button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
-    <Loader v-if="getStudySetsLoader" />
+    <Loader v-if="listStudySetsLoader" />
     <div class="card-deck" v-else>
       <div class="text-center" v-if="!studysets.results.length">
         <h6 class="mb-2">No studysets yet</h6>
@@ -43,8 +48,9 @@ export default {
   data () {
     return {
       studySetTitle: null,
+      creatingStudySet: false,
       page: 1,
-      getStudySetsLoader: true,
+      listStudySetsLoader: true,
       studysets: {}
     }
   },
@@ -54,15 +60,26 @@ export default {
     },
   },
   methods: {
-    getStudySets () {
-      appService.getStudySets(this.page).then(data => {
+    listStudySets () {
+      appService.listStudySets(this.page).then(data => {
         this.studysets = data
-        this.getStudySetsLoader = false
+        this.listStudySetsLoader = false
       })
     },
+    createStudySet() {
+      this.creatingStudySet = true
+      appService.createStudySet({
+        user: 2,
+        title: this.studySetTitle
+      }).then((data) => {
+        this.studySetTitle = null
+        this.studysets.results.unshift(data)
+        this.creatingStudySet = false
+      })
+    }
   },
   created() {
-    this.getStudySets()
+    this.listStudySets()
   }
 }
 </script>

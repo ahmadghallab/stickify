@@ -12,13 +12,23 @@ axios.interceptors.request.use(function (config) {
 })
 
 const appService = {
-  getStudySets (page) {
+  listStudySets (page) {
     return new Promise((resolve, reject) => {
       axios.get(`/studysets/?page=${page}`)
         .then(response => {
           resolve(response.data)
         }).catch(error => {
           reject(error.response)
+        })
+    })
+  },
+  createStudySet (data) {
+    return new Promise((resolve, reject) => {
+      axios.post('/studysets/', data)
+        .then(response => {
+          resolve(response.data)
+        }).catch(response => {
+          reject(response.status)
         })
     })
   },
