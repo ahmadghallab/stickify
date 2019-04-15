@@ -30,21 +30,31 @@ body, a, a:hover, a:focus, a:active {
   height: calc(100vh - 198px);
   overflow: auto;
 }
+.mb-custom {
+  margin-bottom: 30px;
+}
+.default-card, .card__header, .card__body, .card__footer {
+  background-color: #ffffff;
+  padding: 1.3rem;
+}
 .default-card {
   margin-bottom: 30px;
-  border-radius: 0.9rem;
-  padding: 1.1rem;
+  border-radius: 0.4rem;
 }
 .card__header {
-  border-radius: 0.9rem 0.9rem 0 0;
-  padding: 1.1rem;
-}
-.card__body {
-  padding: 1.1rem;
+  border-radius: 0.4rem 0.4rem 0 0;
 }
 .card__footer {
-  border-radius: 0 0 0.9rem 0.9rem;
-  padding: 1.1rem;
+  border-radius: 0 0 0.4rem 0.4rem;
+  margin-bottom: 30px;
+}
+.verline {
+  display: block;
+  margin: 0 auto 30px;
+  width: 10px;
+  height: 47px;
+  background: #d4d9dd;
+  border-radius: 5px;
 }
 .bootstrap-nav {
   margin: 0 auto;
@@ -65,12 +75,11 @@ body, a, a:hover, a:focus, a:active {
   margin-bottom: 30px;
   flex: 1 0 auto;
   border: 0;
-  border-radius: 1.3rem;
+  border-radius: 4px;
   padding: 0.7rem;
 }
-.card-deck>.studyset {
+.card-deck>.studyset, .default-card, .card__footer {
   box-shadow: 0 2px 0 rgba(0,0,0,0.06);
-  border-radius: 4px;
 }
 .card-deck>.studyset:after, .card-deck>.studyset:before {
   content: "";
@@ -160,41 +169,41 @@ a, .form-control, .btn, .circle, .progress__value {
 .light-black {
   background-color: #3e474f;
 }
-.white {
-  background-color: #ffffff;
-}
 .red {
-  background-color: #f28b82;
+  background-color: #f44336;
 }
 .orange {
-  background-color: #fbbc04;
+  background-color: #ff9800;
 }
-.yellow {
-  background-color: #fff475;
+.deep-orange {
+  background-color: #ff5722;
 }
 .green {
-  background-color: #ccff90;
+  background-color: #4caf50;
 }
 .teal {
-  background-color: #a7ffeb;
+  background-color: #00bcd4;
 }
 .blue {
-  background-color: #cbf0f8;
+  background-color: #2196f3;
 }
-.dark-blue {
-  background-color: #aecbfa;
+.dark-blue, .indigo {
+  background-color: #3f51b5;
 }
 .purple {
-  background-color: #d7aefb;
+  background-color: #9c27b0;
+}
+.deep-purple {
+  background-color: #673ab7;
 }
 .pink {
-  background-color: #fdcfe8;
+  background-color: #e91e63;
 }
 .brown {
-  background-color: #e6c9a8;
+  background-color: #795548;
 }
-.gray {
-  background-color: #e8eaed;
+.blue-grey {
+  background-color: #607d8b;
 }
 @media(min-width:575px) {
   .card-deck>.card {

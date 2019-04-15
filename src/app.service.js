@@ -22,6 +22,16 @@ const appService = {
         })
     })
   },
+  retrieveStudySet (studySetId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`/studysets/${studySetId}/`)
+        .then(response => {
+          resolve(response.data)
+        }).catch(error => {
+          reject(error.response)
+        })
+    })
+  },
   createStudySet (data) {
     return new Promise((resolve, reject) => {
       axios.post('/studysets/', data)
