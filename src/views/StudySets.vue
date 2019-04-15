@@ -13,7 +13,7 @@
                   placeholder="New Study Set; Subject, chapter, unit">
               </div>
               <div class="col-12">
-                <button type="button" class="btn primary" :disabled="newStudySetValidator || creatingStudySet">
+                <button type="submit" class="btn primary" :disabled="newStudySetValidator || creatingStudySet">
                   {{ creatingStudySet ? 'Creating' : 'Create' }}
                 </button>
               </div>
@@ -28,9 +28,11 @@
         <h6 class="mb-2">No studysets yet</h6>
         <p class="text-muted">use the form above to create a new studyset.</p>
       </div>
-      <div class="card" v-for="(studyset, idx) in studysets.results" v-bind:key="idx">
+      <div class="card studyset" v-for="(studyset, idx) in studysets.results" v-bind:key="idx">
         <div class="card-body">
-          <h4 class="card-title font-weight-bold">{{ studyset.title }}</h4>
+          <router-link :to="{ name: 'cards', params: {id: studyset.id} }">
+            <h4 class="card-title font-weight-bold">{{ studyset.title }}</h4>
+          </router-link>
           <p class="card-text text-muted">21 terms</p>
         </div>
       </div>

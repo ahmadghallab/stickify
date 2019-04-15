@@ -32,6 +32,26 @@ const appService = {
         })
     })
   },
+  listCards (studySetId, page) {
+    return new Promise((resolve, reject) => {
+      axios.get(`/studysets/${studySetId}/cards/?page=${page}`)
+        .then(response => {
+          resolve(response.data)
+        }).catch(error => {
+          reject(error.response)
+        })
+    })
+  },
+  createCard (data) {
+    return new Promise((resolve, reject) => {
+      axios.post(`/studysets/${data.studyset}/cards/`, data)
+        .then(response => {
+          resolve(response.data)
+        }).catch(response => {
+          reject(response.status)
+        })
+    })
+  },
 }
 
 export default appService
