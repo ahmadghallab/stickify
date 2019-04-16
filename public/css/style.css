@@ -149,9 +149,10 @@ body, a, a:hover, a:focus, a:active {
 .btn:hover, a.circle:hover {
   opacity: 0.8;
 }
-.btn[disabled], .not-correct {
+.btn[disabled], .inactive {
   color: #fff !important;
-  opacity: 0.3 !important;
+  opacity: 0.5 !important;
+  cursor: not-allowed;
 }
 .btn.primary {
   background-color: #5fcf80;

@@ -56,7 +56,8 @@
           <div class="row justify-content-between mb-custom">
             <div class="col-auto align-self-center">
               <a href="javascript:void(0)" @click="changeCard('prev')"
-                class="circle circle-md grey mr-1">
+                class="circle circle-md grey mr-1" 
+                v-bind:class="{'inactive': firstCard}">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M379.644,477.872l-207.299-207.73c-7.798-7.798-7.798-20.486,0.015-28.299L379.643,34.128
@@ -67,7 +68,8 @@
                 </svg>
               </a>
               <a href="javascript:void(0)" @click="changeCard('next')"
-                class="circle circle-md grey ml-1">
+                class="circle circle-md grey ml-1"
+                v-bind:class="{'inactive': lastCard}">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M367.954,213.588L160.67,5.872c-7.804-7.819-20.467-7.831-28.284-0.029c-7.819,7.802-7.832,20.465-0.03,28.284
@@ -87,12 +89,13 @@
                   <use class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" xlink:href="#circle">
                     <circle id="circle" cx="36" cy="36" r="32" fill="none"></circle>
                   </use>
-                  <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle">{{ cardNo + '/' + cards.length }}</text>
+                  <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle">{{ cardIdx+1 + '/' + cards.length }}</text>
                 </g>
               </svg>
             </div>
             <div class="col-auto align-self-center">
-              <a href="javascript:void(0)" class="circle circle-md grey mr-2">
+              <a href="javascript:void(0)" 
+                class="circle circle-md grey mr-2">
                 <svg class="icon" viewBox="0 0 511.999 511.999"   
                   style="enable-background:new 0 0 511.999 511.999;">
                   <g>
@@ -154,7 +157,6 @@ export default {
       cardDefinition: null,
       cardColor: null,
       creatingCard: false,
-      cardNo: 1,
       cardIdx: 0,
       listCardsLoader: true,
       retrieveStudySetLoader: true,
@@ -168,9 +170,15 @@ export default {
       return (this.cardTerm && this.cardDefinition && this.cardColor) ? false : true
     },
     cardProgress () {
-      let progressPercent = this.cardNo/this.cards.length
+      let progressPercent = (this.cardIdx+1)/this.cards.length
       return 201.06192982974676 * (1 - progressPercent)
     },
+    firstCard () {
+      return (this.cardIdx == 0) ? true : false
+    },
+    lastCard () {
+      return (this.cardIdx + 1 == this.cards.length) ? true : false
+    }
   },
   methods: {
     selectColor(color) {
@@ -204,12 +212,11 @@ export default {
       }).catch()
     },
     changeCard (dir) {
-      if (dir == 'next') {
+      if (dir == 'next' && !this.lastCard) {
         this.cardIdx = this.cardIdx + 1
-        this.cardNo = this.cardNo + 1
-      } else {
+      }  
+      if (dir == 'prev' && !this.firstCard) {
         this.cardIdx = this.cardIdx - 1
-        this.cardNo = this.cardNo - 1
       }
     }
   },
