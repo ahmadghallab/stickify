@@ -42,9 +42,9 @@ const appService = {
         })
     })
   },
-  listCards (studySetId, page) {
+  listCards (studySetId) {
     return new Promise((resolve, reject) => {
-      axios.get(`/studysets/${studySetId}/cards/?page=${page}`)
+      axios.get(`/studysets/${studySetId}/cards/`)
         .then(response => {
           resolve(response.data)
         }).catch(error => {

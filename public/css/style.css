@@ -27,7 +27,7 @@ body, a, a:hover, a:focus, a:active {
   margin: 35px auto;
 }
 .flashcard {
-  height: calc(100vh - 198px);
+  height: calc(100vh - 330px);
   overflow: auto;
 }
 .mb-custom {
@@ -42,10 +42,10 @@ body, a, a:hover, a:focus, a:active {
   border-radius: 0.4rem;
 }
 .card__header {
-  border-radius: 0.4rem 0.4rem 0 0;
+  border-radius: 2rem 2rem 0 0;
 }
 .card__footer {
-  border-radius: 0 0 0.4rem 0.4rem;
+  border-radius: 0 0 2rem 2rem;
   margin-bottom: 30px;
 }
 .verline {
@@ -78,7 +78,7 @@ body, a, a:hover, a:focus, a:active {
   border-radius: 4px;
   padding: 0.7rem;
 }
-.card-deck>.studyset, .default-card, .card__footer {
+.card-deck>.studyset, .default-card, {
   box-shadow: 0 2px 0 rgba(0,0,0,0.06);
 }
 .card-deck>.studyset:after, .card-deck>.studyset:before {
@@ -165,6 +165,10 @@ body, a, a:hover, a:focus, a:active {
 a, .form-control, .btn, .circle, .progress__value {
   transition: all 120ms cubic-bezier(0.47,0,0.745,0.715);
 }
+.icon {
+  width: 20px;
+  fill: #fff;
+}
 /*********** COLORS ***********/
 .light-black {
   background-color: #3e474f;
@@ -202,8 +206,8 @@ a, .form-control, .btn, .circle, .progress__value {
 .brown {
   background-color: #795548;
 }
-.blue-grey {
-  background-color: #607d8b;
+.grey {
+  background-color: #b7c0c7;
 }
 @media(min-width:575px) {
   .card-deck>.card {
