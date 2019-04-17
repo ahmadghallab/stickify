@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-md-10">
+    <div class="col">
       <!-- <Loader v-if="retrieveStudySetLoader" />
       <div class="default-card" v-else>
         <h4 class="font-weight-bold">{{ studySetTitle }}</h4>
@@ -41,23 +41,13 @@
       <Loader v-if="listCardsLoader" />
       <div v-else>
         <div v-if="cards.length">
-          <transition name="card-slide" mode="out-in">
-            <div :key="cardIdx">
-              <div class="card__header"></div>
-              <div class="card__body text-white flashcard d-flex justify-content-center" v-bind:class="cards[cardIdx].color">
-                <transition name="card-slide" mode="out-in">
-                  <h2 class="align-self-center" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].definition }}</h2>
-                  <h1 class="align-self-center text-center" v-else key="2">{{ cards[cardIdx].term }}</h1>
-                </transition>
-              </div>
-              <div class="card__footer"></div>
-            </div>
-          </transition>
           <div class="row justify-content-between mb-custom">
             <div class="col-auto align-self-center">
-              <a href="javascript:void(0)" @click="changeCard('prev')"
+              <a href="javascript:void(0)"
                 class="circle circle-md grey mr-1" 
-                v-bind:class="{'inactive': firstCard}">
+                v-bind:class="{'inactive': firstCard}"
+                @click="changeCard('prev')"
+                v-shortkey="['arrowleft']" @shortkey="changeCard('prev')">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M379.644,477.872l-207.299-207.73c-7.798-7.798-7.798-20.486,0.015-28.299L379.643,34.128
@@ -67,9 +57,11 @@
                   </g>
                 </svg>
               </a>
-              <a href="javascript:void(0)" @click="changeCard('next')"
+              <a href="javascript:void(0)"
                 class="circle circle-md grey ml-1"
-                v-bind:class="{'inactive': lastCard}">
+                v-bind:class="{'inactive': lastCard}"
+                @click="changeCard('next')"
+                v-shortkey="['arrowright']" @shortkey="changeCard('next')">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M367.954,213.588L160.67,5.872c-7.804-7.819-20.467-7.831-28.284-0.029c-7.819,7.802-7.832,20.465-0.03,28.284
@@ -94,8 +86,10 @@
               </svg>
             </div>
             <div class="col-auto align-self-center">
-              <a href="javascript:void(0)" 
-                class="circle circle-md grey mr-2">
+              <a href="javascript:void(0)"
+                @click="playCards = !playCards" 
+                class="circle circle-md mr-2"
+                v-bind:class="{'grey': !playCards, 'green': playCards}">
                 <svg class="icon" viewBox="0 0 511.999 511.999"   
                   style="enable-background:new 0 0 511.999 511.999;">
                   <g>
@@ -129,12 +123,32 @@
                   </g>
                 </svg>
               </a>
-              <a href="javascript:void(0)" @click="flipTermDefinition = !flipTermDefinition" class="circle circle-md grey">
+              <a href="javascript:void(0)" class="circle circle-md grey"
+                @click="flipCard"
+                v-shortkey="['space']" @shortkey="flipCard">
                 <svg class="icon" viewBox="0 0 512 512">
                   <path d="m63.613281 190.464844c-11.371093-11.371094-17.613281-26.4375-17.613281-42.464844s6.242188-31.09375 17.574219-42.425781l100.324219-99.757813c7.832031-7.785156 20.496093-7.75 28.285156.082032 7.789062 7.832031 7.75 20.496093-.082032 28.28125l-100.285156 99.71875c-3.734375 3.738281-5.816406 8.757812-5.816406 14.101562 0 5.339844 2.082031 10.363281 5.859375 14.140625l100.242187 99.675781c7.832032 7.789063 7.871094 20.453125.082032 28.285156-3.910156 3.929688-9.046875 5.898438-14.183594 5.898438-5.101562 0-10.199219-1.9375-14.101562-5.816406zm428.386719-62.464844h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20s-8.953125-20-20-20zm-143.898438 93.816406c-7.832031-7.785156-20.496093-7.75-28.285156.082032-7.789062 7.832031-7.75 20.496093.082032 28.28125l100.242187 99.679687c3.777344 3.773437 5.859375 8.796875 5.859375 14.140625 0 5.339844-2.082031 10.363281-5.816406 14.101562l-100.285156 99.714844c-7.832032 7.789063-7.871094 20.453125-.082032 28.285156 3.910156 3.929688 9.046875 5.898438 14.183594 5.898438 5.097656 0 10.199219-1.9375 14.101562-5.816406l100.324219-99.757813c11.332031-11.332031 17.574219-26.398437 17.574219-42.425781s-6.242188-31.09375-17.613281-42.46875zm18.898438 142.183594c0-11.046875-8.953125-20-20-20h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20zm0 0"/>
                 </svg>
               </a>
             </div>
+          </div>
+          <transition name="card-slide" mode="out-in">
+            <div :key="cardIdx">
+              <div class="card__header text-white flashcard d-flex justify-content-center" v-bind:class="cards[cardIdx].color">
+                <transition name="card-slide" mode="out-in">
+                  <h1 class="align-self-center" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].definition }}</h1>
+                  <h1 class="align-self-center text-center" v-else key="2">{{ cards[cardIdx].term }}</h1>
+                </transition>
+              </div>
+              <div class="card__footer">
+                <kbd class="grey">←</kbd> <span class="text-muted mx-2">previous card</span>
+                <kbd class="grey">→</kbd> <span class="text-muted mx-2">next card</span>
+                <kbd class="grey">Space</kbd> <span class="text-muted mx-2">flip card</span>
+              </div>
+            </div>
+          </transition>
+          <div class="fixed-bottom">
+            
           </div>
         </div>
       </div>
@@ -161,8 +175,26 @@ export default {
       listCardsLoader: true,
       retrieveStudySetLoader: true,
       flipTermDefinition: false,
+      playCards: false,
+      slider: null,
+      fliper: null,
       colorPalette: ['orange', 'deep-orange', 'green', 'brown', 'blue', 'indigo', 'purple', 'deep-purple', 'red', 'pink', 'teal', 'gray'],
       cards: []
+    }
+  },
+  watch: {
+    playCards: function (val) {
+      if (val) {
+        this.fliper = setInterval(() => {
+          this.flipCard()
+        }, 5000)
+        this.slider = setInterval(() => {
+          this.changeCard('next')
+        }, 10000)
+      } else {
+        clearInterval(this.slider)
+        clearInterval(this.fliper)
+      }
     }
   },
   computed: {
@@ -181,6 +213,9 @@ export default {
     }
   },
   methods: {
+    flipCard () {
+      this.flipTermDefinition = !this.flipTermDefinition
+    },
     selectColor(color) {
       this.cardColor = color
     },

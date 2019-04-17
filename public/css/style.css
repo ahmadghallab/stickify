@@ -27,11 +27,22 @@ body, a, a:hover, a:focus, a:active {
   margin: 35px auto;
 }
 .flashcard {
-  height: 400px;
-  overflow: auto;
+  min-height: calc(100vh - 320px);
+}
+.highlight {
+  background: rgba(0,0,0,0.3);
+  padding: 0 1rem;
+  border-radius: 25px;
+}
+.flashcards-ctrl {
+  background: rgba(255,255,255,0.7) !important;
+  border-radius: 35px;
 }
 .mb-custom {
   margin-bottom: 30px;
+}
+.pxy-custom {
+  padding: 3rem !important;
 }
 .default-card, .card__header, .card__body, .card__footer {
   background-color: #ffffff;
@@ -39,7 +50,7 @@ body, a, a:hover, a:focus, a:active {
 }
 .default-card {
   margin-bottom: 30px;
-  border-radius: 0.4rem;
+  border-radius: 2rem;
 }
 .card__header {
   border-radius: 2rem 2rem 0 0;
@@ -74,7 +85,7 @@ body, a, a:hover, a:focus, a:active {
   border-radius: 4px;
   padding: 0.7rem;
 }
-.card-deck>.studyset, .default-card, {
+.card-deck>.studyset {
   box-shadow: 0 2px 0 rgba(0,0,0,0.06);
 }
 .card-deck>.studyset:after, .card-deck>.studyset:before {
@@ -165,7 +176,7 @@ body, a, a:hover, a:focus, a:active {
 .btn, .btn:focus, .form-control, .form-control:focus, .in-invalid:focus, .custom-control-input:focus~.custom-control-label::before {
   box-shadow: none !important;
 }
-a, .form-control, .btn, .circle, .progress__value {
+a, .form-control, .btn, .circle, .progress__value, .default-card {
   transition: all .3s ease;
 }
 .icon {
@@ -173,34 +184,19 @@ a, .form-control, .btn, .circle, .progress__value {
   fill: #fff;
 }
 /*********** COLORS ***********/
-.red {
-  background-color: #f44336;
-}
 .orange {
   background-color: #ff9800;
-}
-.deep-orange {
-  background-color: #ff5722;
 }
 .green {
   background-color: #4caf50;
 }
-.teal {
-  background-color: #00bcd4;
-}
-.blue {
+.blue, .teal, .dark-blue, .indigo {
   background-color: #2196f3;
 }
-.dark-blue, .indigo {
-  background-color: #3f51b5;
-}
 .purple {
-  background-color: #9c27b0;
+  background-color: #8158fc;
 }
-.deep-purple {
-  background-color: #673ab7;
-}
-.pink {
+.pink, .red {
   background-color: #e91e63;
 }
 .brown {
