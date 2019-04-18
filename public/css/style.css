@@ -28,15 +28,13 @@ body, a, a:hover, a:focus, a:active {
 }
 .flashcard {
   min-height: calc(100vh - 320px);
+  max-height: 400px;
+  overflow: auto;
 }
 .highlight {
   background: rgba(0,0,0,0.3);
   padding: 0 1rem;
   border-radius: 25px;
-}
-.flashcards-ctrl {
-  background: rgba(255,255,255,0.7) !important;
-  border-radius: 35px;
 }
 .mb-custom {
   margin-bottom: 30px;

@@ -1,11 +1,11 @@
 <template>
   <div class="row justify-content-center">
     <div class="col">
-      <!-- <Loader v-if="retrieveStudySetLoader" />
+      <Loader v-if="retrieveStudySetLoader" />
       <div class="default-card" v-else>
         <h4 class="font-weight-bold">{{ studySetTitle }}</h4>
         <p class="text-muted mb-0">{{ cards.length ? cards.length + ' cards' : 'No cards yet' }}</p>
-      </div> -->
+      </div>
       <!-- 
       <div class="text-center mb-custom">
         <span class="circle circle-md text-white green font-weight-bold">new</span>
@@ -87,7 +87,8 @@
             </div>
             <div class="col-auto align-self-center">
               <a href="javascript:void(0)"
-                @click="playCards = !playCards" 
+                @click="startShow()"
+                v-shortkey="['p']" @shortkey="startShow()" 
                 class="circle circle-md mr-2"
                 v-bind:class="{'grey': !playCards, 'green': playCards}">
                 <svg class="icon" viewBox="0 0 511.999 511.999"   
@@ -103,7 +104,10 @@
                   </g>
                 </svg>
               </a>
-              <a href="javascript:void(0)" class="circle circle-md grey mr-2">
+              <a href="javascript:void(0)"
+                @click="shuffle()"
+                v-shortkey="['h']" @shortkey="shuffle()" 
+                class="circle circle-md grey mr-2">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M494.246,359.453L432.084,297.8c-7.843-7.778-20.506-7.727-28.284,0.116c-7.778,7.843-7.726,20.506,0.116,28.284
@@ -136,19 +140,32 @@
             <div :key="cardIdx">
               <div class="card__header text-white flashcard d-flex justify-content-center" v-bind:class="cards[cardIdx].color">
                 <transition name="card-slide" mode="out-in">
-                  <h1 class="align-self-center" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].definition }}</h1>
+                  <h1 class="align-self-center" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].definition.slice(0,255) }}</h1>
                   <h1 class="align-self-center text-center" v-else key="2">{{ cards[cardIdx].term }}</h1>
                 </transition>
               </div>
               <div class="card__footer">
-                <kbd class="grey">←</kbd> <span class="text-muted mx-2">previous card</span>
-                <kbd class="grey">→</kbd> <span class="text-muted mx-2">next card</span>
-                <kbd class="grey">Space</kbd> <span class="text-muted mx-2">flip card</span>
+                <kbd class="grey">←</kbd> <span class="text-muted mx-2">Prev</span>
+                <kbd class="grey">→</kbd> <span class="text-muted mx-2">Next</span>
+                <kbd class="grey">space</kbd> <span class="text-muted mx-2">Flip</span>
+                <kbd class="grey">p</kbd> <span class="text-muted mx-2">Play</span>
+                <kbd class="grey">h</kbd> <span class="text-muted mx-2">Shuffle</span>
               </div>
             </div>
           </transition>
-          <div class="fixed-bottom">
-            
+          <div class="default-card" v-for="(card, index) in cards" v-bind:key="index">
+            <div class="row">
+              <div class="col-auto align-self-center">
+                <span class="circle circle-md text-white"
+                v-bind:class="card.color">{{ index+1 }}</span>
+              </div>
+              <div class="col-md-4 align-self-center">
+                <h5 class="mb-0 font-weight-bold">{{ card.term }}</h5>
+              </div>
+              <div class="col align-self-center">
+                <p class="mb-0 text-muted">{{ card.definition.slice(0,255) }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -213,6 +230,9 @@ export default {
     }
   },
   methods: {
+    startShow () {
+      this.playCards = !this.playCards
+    },
     flipCard () {
       this.flipTermDefinition = !this.flipTermDefinition
     },
@@ -245,6 +265,16 @@ export default {
         this.cards.unshift(data)
         this.creatingCard = false
       }).catch()
+    },
+    shuffle () {
+      let j, x, i
+      for (i = this.cards.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1))
+        x = this.cards[i]
+        this.cards[i] = this.cards[j]
+        this.cards[j] = x
+      }
+      this.cardIdx = 0
     },
     changeCard (dir) {
       if (dir == 'next' && !this.lastCard) {
