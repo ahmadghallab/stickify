@@ -77,7 +77,11 @@
                 @click="startShow()"
                 v-shortkey="['p']" @shortkey="startShow()" 
                 class="circle circle-md mr-2"
-                v-bind:class="{'grey': !playCards, 'green': playCards}">
+                v-bind:class="{
+                  'grey': !playCards, 
+                  'green': playCards, 
+                  'inactive': oneCard
+                }">
                 <svg class="icon" viewBox="0 0 511.999 511.999"   
                   style="enable-background:new 0 0 511.999 511.999;">
                   <g>
@@ -94,7 +98,8 @@
               <a href="javascript:void(0)"
                 @click="shuffle()"
                 v-shortkey="['h']" @shortkey="shuffle()" 
-                class="circle circle-md grey mr-2">
+                class="circle circle-md grey mr-2"
+                v-bind:class="{'inactive': oneCard}">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M494.246,359.453L432.084,297.8c-7.843-7.778-20.506-7.727-28.284,0.116c-7.778,7.843-7.726,20.506,0.116,28.284
@@ -221,49 +226,48 @@
               </div>
             </div>
           </div>
-          <div class="text-center mb-custom">
-            <span class="verline"></span>
-          </div>
-          <div class="card__header grey text-white"
-            v-bind:class="cardColor">
-            <h5 class="mb-0 font-weight-bold">New Card</h5>
-          </div>
-          <div class="card__footer">
-            <form v-on:submit.prevent="createCard()">
-              <div class="form-row">
-                <div class="form-group col-12">
-                  <input id="cardTerm" v-model="cardTerm" 
-                    class="form-control"
-                    autocomplete="off" 
-                    placeholder="Enter term">
-                </div>
-                <div class="form-group col-12">
-                  <textarea id="cardDefinition" v-model="cardDefinition" 
-                    class="form-control"
-                    autocomplete="off" 
-                    placeholder="Enter Definition"></textarea>
-                </div>
-                <div class="form-group col-12">
-                  <input type="hidden" v-model="cardColor">
-                  <a href="javascript:void(0)" v-for="(color, idx) in colorPalette" v-bind:key="idx"
-                    class="circle circle-md align-top mr-1 mt-1"
-                    v-bind:class="color"
-                    @click="selectColor(color)">
-                    <svg v-if="cardColor == color" viewBox="0 -49 512.00075 512" class="icon">
-                      <path d="m190.476562 413.828125c-20.628906 0-40.503906-8.0625-55.347656-22.652344l-129.148437-126.910156c-7.878907-7.742187-7.988281-20.40625-.246094-28.28125 7.742187-7.878906 20.40625-7.992187 28.285156-.25l129.144531 126.910156c8.105469 7.964844 19.246094 11.992188 30.570313 11.050781 11.324219-.945312 21.648437-6.757812 28.324219-15.953124l253.757812-349.492188c6.488282-8.9375 18.996094-10.921875 27.933594-4.433594 8.9375 6.492188 10.921875 19 4.433594 27.9375l-253.757813 349.488282c-13.523437 18.625-34.433593 30.402343-57.371093 32.3125-2.195313.183593-4.394532.273437-6.578126.273437zm0 0"/>
-                    </svg>
-                    </a>
-                </div>
-                <div class="col-12 mt-3">
-                  <button type="submit" class="btn grey text-white"
-                    v-bind:class="cardColor"
-                    :disabled="newCardValidator || creatingCard">
-                    {{ creatingCard ? 'Creating' : 'Create' }}
-                  </button>
-                </div>
+        </div>
+        <span class="verline"></span>
+        <div class="card__header grey text-white"
+          v-bind:class="cardColor">
+          <h5 class="mb-0 font-weight-bold">New Card</h5>
+        </div>
+        <div class="card__footer">
+          <form v-on:submit.prevent="createCard()">
+            <div class="form-row">
+              <div class="form-group col-12">
+                <input id="cardTerm" v-model="cardTerm" 
+                  class="form-control"
+                  autocomplete="off" 
+                  placeholder="Enter term">
               </div>
-            </form>
-          </div>
+              <div class="form-group col-12">
+                <textarea id="cardDefinition" v-model="cardDefinition" 
+                  class="form-control"
+                  autocomplete="off" 
+                  placeholder="Enter Definition"></textarea>
+              </div>
+              <div class="form-group col-12">
+                <input type="hidden" v-model="cardColor">
+                <a href="javascript:void(0)" 
+                  v-for="(color, idx) in colorPalette" v-bind:key="idx"
+                  class="circle circle-md align-top mr-1 mt-1"
+                  v-bind:class="color"
+                  @click="selectColor(color)">
+                  <svg v-if="cardColor == color" viewBox="0 -49 512.00075 512" class="icon">
+                    <path d="m190.476562 413.828125c-20.628906 0-40.503906-8.0625-55.347656-22.652344l-129.148437-126.910156c-7.878907-7.742187-7.988281-20.40625-.246094-28.28125 7.742187-7.878906 20.40625-7.992187 28.285156-.25l129.144531 126.910156c8.105469 7.964844 19.246094 11.992188 30.570313 11.050781 11.324219-.945312 21.648437-6.757812 28.324219-15.953124l253.757812-349.492188c6.488282-8.9375 18.996094-10.921875 27.933594-4.433594 8.9375 6.492188 10.921875 19 4.433594 27.9375l-253.757813 349.488282c-13.523437 18.625-34.433593 30.402343-57.371093 32.3125-2.195313.183593-4.394532.273437-6.578126.273437zm0 0"/>
+                  </svg>
+                </a>
+              </div>
+              <div class="col-12 mt-3">
+                <button type="submit" class="btn grey text-white"
+                  v-bind:class="cardColor"
+                  :disabled="newCardValidator || creatingCard">
+                  {{ creatingCard ? 'Creating' : 'Create' }}
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -303,21 +307,6 @@ export default {
       cards: []
     }
   },
-  watch: {
-    playCards: function (val) {
-      if (val) {
-        this.fliper = setInterval(() => {
-          this.flipCard()
-        }, 5000)
-        this.slider = setInterval(() => {
-          this.changeCard('next')
-        }, 10000)
-      } else {
-        clearInterval(this.slider)
-        clearInterval(this.fliper)
-      }
-    }
-  },
   computed: {
     newCardValidator () {
       return (this.cardTerm && this.cardDefinition && this.cardColor) ? false : true
@@ -334,11 +323,32 @@ export default {
     },
     lastCard () {
       return (this.cardIdx + 1 == this.cards.length) ? true : false
+    },
+    oneCard () {
+      return (this.cards.length == 1) ? true : false
+    }
+  },
+  watch: {
+    playCards: function (val) {
+      if (val) {
+        this.fliper = setInterval(() => {
+          this.flipCard()
+        }, 5000)
+        this.slider = setInterval(() => {
+          this.changeCard('next')
+        }, 10000)
+      } else {
+        clearInterval(this.slider)
+        clearInterval(this.fliper)
+      }
+    },
+    lastCard: function (val) {
+      if (val) this.playCards = false
     }
   },
   methods: {
     startShow () {
-      this.playCards = !this.playCards
+      if (!this.oneCard) this.playCards = !this.playCards
     },
     flipCard () {
       this.flipTermDefinition = !this.flipTermDefinition
@@ -372,7 +382,7 @@ export default {
         this.cardTerm = null
         this.cardDefinition = null
         this.cardColor = null
-        this.cards.unshift(data)
+        this.cards.push(data)
         this.creatingCard = false
       }).catch()
     },
@@ -406,14 +416,16 @@ export default {
       })
     },
     shuffle () {
-      let j, x, i
-      for (i = this.cards.length - 1; i > 0; i--) {
-        j = Math.floor(Math.random() * (i + 1))
-        x = this.cards[i]
-        this.cards[i] = this.cards[j]
-        this.cards[j] = x
+      if (!this.oneCard) {
+        let j, x, i
+        for (i = this.cards.length - 1; i > 0; i--) {
+          j = Math.floor(Math.random() * (i + 1))
+          x = this.cards[i]
+          this.cards[i] = this.cards[j]
+          this.cards[j] = x
+        }
+        this.cardIdx = 0
       }
-      this.cardIdx = 0
     },
     changeCard (dir) {
       if (dir == 'next' && !this.lastCard) {
