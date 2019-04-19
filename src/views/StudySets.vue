@@ -1,8 +1,11 @@
 <template>
   <div>
     <div class="row justify-content-center mb-4">
-      <div class="col-md-8">
-        <div class="default-card white">
+      <div class="col-md-9">
+        <div class="card__header grey text-white">
+          <h5 class="mb-0 font-weight-bold">New Study Set</h5>
+        </div>
+        <div class="card__footer">
           <form v-on:submit.prevent="createStudySet()">
             <div class="form-row">
               <div class="form-group col-12">
@@ -13,7 +16,7 @@
                   placeholder="New Study Set; Subject, chapter, unit">
               </div>
               <div class="col-12">
-                <button type="submit" class="btn primary" :disabled="newStudySetValidator || creatingStudySet">
+                <button type="submit" class="btn grey text-white" :disabled="newStudySetValidator || creatingStudySet">
                   {{ creatingStudySet ? 'Creating' : 'Create' }}
                 </button>
               </div>

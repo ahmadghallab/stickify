@@ -154,17 +154,16 @@ body, a, a:hover, a:focus, a:active {
   border-radius: 4px;
 }
 .btn:hover, a.circle:hover {
-  opacity: 0.8;
+  opacity: 0.7;
 }
 .btn[disabled], .inactive {
   color: #fff !important;
-  opacity: 0.5 !important;
+  opacity: 0.4 !important;
   cursor: not-allowed;
 }
-.btn.primary {
-  background-color: #5fcf80;
-  border-color: #5fcf80;
-  color: #fff;
+.btn-lg {
+  padding: 25px;
+  font-size: 1.2rem;
 }
 ::placeholder {
   color: #b2bbbd !important;
@@ -175,7 +174,7 @@ label {
 .btn, .btn:focus, .form-control, .form-control:focus, .in-invalid:focus, .custom-control-input:focus~.custom-control-label::before {
   box-shadow: none !important;
 }
-a, .form-control, .btn, .circle, .progress__value {
+a, .form-control, .btn, .circle, .progress__value, .card__header {
   transition: all .3s ease;
 }
 .icon {
@@ -183,30 +182,29 @@ a, .form-control, .btn, .circle, .progress__value {
   fill: #fff;
 }
 /*********** COLORS ***********/
+.grey {
+  background-color: #b7c0c7;
+}
 .orange {
   background-color: #ff9800;
 }
 .green {
   background-color: #4caf50;
 }
-.blue, .teal, .dark-blue, .indigo {
+.blue {
   background-color: #2196f3;
 }
 .purple {
   background-color: #8158fc;
 }
-.pink, .red {
+.red {
   background-color: #e91e63;
 }
 .brown {
   background-color: #795548;
 }
-.grey {
-  background-color: #b7c0c7;
-  color: #fff !important;
-}
 .transparent-dark {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.4);
 }
 @media(min-width:575px) {
   .card-deck>.card {

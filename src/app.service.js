@@ -62,6 +62,26 @@ const appService = {
         })
     })
   },
+  updateCard (data) {
+    return new Promise((resolve, reject) => {
+      axios.patch(`/cards/${data.id}/`, data)
+        .then(response => {
+          resolve(response.data)
+        }).catch(response => {
+          reject(response.status)
+        })
+    })
+  },
+  deleteCard (cardId) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`/cards/${cardId}/`)
+        .then(response => {
+          resolve(response.data)
+        }).catch(error => {
+          reject(error.response)
+        })
+    })
+  },
 }
 
 export default appService

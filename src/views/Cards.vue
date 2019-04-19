@@ -8,38 +8,6 @@
           {{ cards.length ? cards.length + ' cards' : 'No cards yet' }}
         </p>
       </div>
-      <!-- 
-      <div class="text-center mb-custom">
-        <span class="circle circle-md text-white green font-weight-bold">new</span>
-      </div> -->
-      <!-- <div class="default-card">
-        <form v-on:submit.prevent="createCard()">
-          <div class="form-row">
-            <div class="form-group col-12">
-              <input id="cardTerm" v-model="cardTerm" 
-                class="form-control" 
-                placeholder="Enter term">
-            </div>
-            <div class="form-group col-12">
-              <textarea id="cardDefinition" v-model="cardDefinition" 
-                class="form-control" 
-                placeholder="Enter Definition"></textarea>
-            </div>
-            <div class="form-group col-12">
-              <input type="hidden" v-model="cardColor">
-              <a href="javascript:void(0)" v-for="(color, idx) in colorPalette" v-bind:key="idx"
-                class="circle circle-sm mr-1 mt-1"
-                v-bind:class="[color, {'selected-color': cardColor == color}]"
-                @click="selectColor(color)"></a>
-            </div>
-            <div class="col-12 mt-2">
-              <button type="submit" class="btn primary" :disabled="newCardValidator || creatingCard">
-                {{ creatingCard ? 'Creating' : 'Create' }}
-              </button>
-            </div>
-          </div>
-        </form>
-      </div> -->
       <Loader v-if="listCardsLoader" />
       <div v-else>
         <div v-if="cards.length">
@@ -161,17 +129,15 @@
                 <span class="circle circle-md text-white"
                 v-bind:class="card.color">{{ index+1 }}</span>
               </div>
-              <div class="col-md-3 align-self-center">
-                <h5 class="mb-0 font-weight-bold">{{ card.term }}</h5>
-              </div>
               <div class="col align-self-center">
+                <h5 class="font-weight-bold">{{ card.term }}</h5>
                 <p class="mb-0 text-muted">{{ card.definition.slice(0,255) }}</p>
               </div>
               <div class="col-auto align-self-center">
                 <a href="javascript:void(0)"
-                  @click="editCard(card.id)" 
-                  class="circle circle-md grey mr-2">edit</a>
-                <Modal v-if="selectedCard == card.id && editCardModal">
+                  @click="updateCardModal(card.id)" 
+                  class="circle circle-md grey text-white mr-2">edit</a>
+                <Modal v-if="selectedCard == card.id && toggleUpdateCardModal">
                   <div slot="header">
                     <div class="card__header" v-bind:class="card.color">
                       <div class="row justify_content-between">
@@ -181,7 +147,7 @@
                         <div class="col-auto align-self-center">
                           <a href="javascript:void(0)" 
                           class="circle circle-md transparent-dark text-white"
-                          @click="editCardModal = false">
+                          @click="toggleUpdateCardModal = false">
                             <svg class="icon" viewBox="0 0 64 64">
                               <g>
                                 <path d="M28.941,31.786L0.613,60.114c-0.787,0.787-0.787,2.062,0,2.849c0.393,0.394,0.909,0.59,1.424,0.59   c0.516,0,1.031-0.196,1.424-0.59l28.541-28.541l28.541,28.541c0.394,0.394,0.909,0.59,1.424,0.59c0.515,0,1.031-0.196,1.424-0.59   c0.787-0.787,0.787-2.062,0-2.849L35.064,31.786L63.41,3.438c0.787-0.787,0.787-2.062,0-2.849c-0.787-0.786-2.062-0.786-2.848,0   L32.003,29.15L3.441,0.59c-0.787-0.786-2.061-0.786-2.848,0c-0.787,0.787-0.787,2.062,0,2.849L28.941,31.786z"/>
@@ -192,7 +158,7 @@
                       </div>
                     </div>
                   </div>
-                  <div slot="body">
+                  <div slot="footer">
                     <div class="card__footer">
                       <form v-on:submit.prevent="updateCard(index)">
                         <div class="form-row">
@@ -230,9 +196,73 @@
                     </div>
                   </div>
                 </Modal>
-                <a href="javascript:void(0)" class="circle circle-md grey">del</a>
+                <a href="javascript:void(0)"
+                  @click="deleteCardConfirmModal(card.id)" 
+                  class="circle circle-md text-white grey">del</a>
+                <Modal width="550px" v-if="selectedCard == card.id && toggleDeleteCardModal">
+                  <div slot="body">
+                    <div class="default-card">
+                      <h4 class="font-weight-bold mb-3">{{ card.term }}</h4>
+                      <p class="text-muted">
+                        You are about to delete this card. No one will be able to access this card ever again.
+                      </p>
+                      <p class="font-weight-bold my-4">Are you absolutely positive? There's no undo.</p>
+                      <div class="text-center">
+                        <button @click="deleteCard(index)"
+                          class="btn red btn-lg btn-block text-white mb-3" :disabled="deletingCard">
+                          {{ deletingCard ? 'Deleting' : 'Yes, delete' }}
+                        </button>
+                        <a href="javascript:void(0)" @click="toggleDeleteCardModal = false"
+                          class="font-weight-bold">Cancel</a>
+                      </div>
+                    </div>
+                  </div>
+                </Modal>
               </div>
             </div>
+          </div>
+          <div class="text-center mb-custom">
+            <span class="verline"></span>
+          </div>
+          <div class="card__header grey text-white"
+            v-bind:class="cardColor">
+            <h5 class="mb-0 font-weight-bold">New Card</h5>
+          </div>
+          <div class="card__footer">
+            <form v-on:submit.prevent="createCard()">
+              <div class="form-row">
+                <div class="form-group col-12">
+                  <input id="cardTerm" v-model="cardTerm" 
+                    class="form-control"
+                    autocomplete="off" 
+                    placeholder="Enter term">
+                </div>
+                <div class="form-group col-12">
+                  <textarea id="cardDefinition" v-model="cardDefinition" 
+                    class="form-control"
+                    autocomplete="off" 
+                    placeholder="Enter Definition"></textarea>
+                </div>
+                <div class="form-group col-12">
+                  <input type="hidden" v-model="cardColor">
+                  <a href="javascript:void(0)" v-for="(color, idx) in colorPalette" v-bind:key="idx"
+                    class="circle circle-md align-top mr-1 mt-1"
+                    v-bind:class="color"
+                    @click="selectColor(color)">
+                    <svg v-if="cardColor == color" viewBox="0 -49 512.00075 512" class="icon">
+                      <path d="m190.476562 413.828125c-20.628906 0-40.503906-8.0625-55.347656-22.652344l-129.148437-126.910156c-7.878907-7.742187-7.988281-20.40625-.246094-28.28125 7.742187-7.878906 20.40625-7.992187 28.285156-.25l129.144531 126.910156c8.105469 7.964844 19.246094 11.992188 30.570313 11.050781 11.324219-.945312 21.648437-6.757812 28.324219-15.953124l253.757812-349.492188c6.488282-8.9375 18.996094-10.921875 27.933594-4.433594 8.9375 6.492188 10.921875 19 4.433594 27.9375l-253.757813 349.488282c-13.523437 18.625-34.433593 30.402343-57.371093 32.3125-2.195313.183593-4.394532.273437-6.578126.273437zm0 0"/>
+                    </svg>
+                    </a>
+                </div>
+                <div class="col-12 mt-3">
+                  <button type="submit" class="btn grey text-white"
+                    v-bind:class="cardColor"
+                    :disabled="newCardValidator || creatingCard">
+                    {{ creatingCard ? 'Creating' : 'Create' }}
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -258,6 +288,7 @@ export default {
       cardColor: null,
       creatingCard: false,
       updatingCard: false,
+      deletingCard: false,
       cardIdx: 0,
       listCardsLoader: true,
       retrieveStudySetLoader: true,
@@ -266,7 +297,8 @@ export default {
       slider: null,
       fliper: null,
       selectedCard: null,
-      editCardModal: false,
+      toggleUpdateCardModal: false,
+      toggleDeleteCardModal: false,
       colorPalette: ['purple', 'green', 'blue', 'brown', 'red', 'orange'],
       cards: []
     }
@@ -344,9 +376,9 @@ export default {
         this.creatingCard = false
       }).catch()
     },
-    editCard(cardId) {
+    updateCardModal(cardId) {
       this.selectedCard = cardId
-      this.editCardModal = true
+      this.toggleUpdateCardModal = true
     },
     updateCard(index) {
       this.updatingCard = true
@@ -356,8 +388,21 @@ export default {
         definition: this.cards[index].definition,
         color: this.cards[index].color,
       }).then(() => {
-        this.editCardModal = false
+        this.toggleUpdateCardModal = false
         this.updatingCard = false
+      })
+    },
+    deleteCardConfirmModal(cardId) {
+      this.selectedCard = cardId
+      this.toggleDeleteCardModal = true
+    },
+    deleteCard(index) {
+      this.deletingCard = true
+      appService.deleteCard(this.selectedCard)
+      .then(() => {
+        this.toggleDeleteCardModal = false
+        this.deletingCard = false
+        this.cards.splice(index, 1)
       })
     },
     shuffle () {

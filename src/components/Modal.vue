@@ -57,9 +57,7 @@ export default {
   transition: all .3s ease;
 }
 .dialog-enter, .dialog-leave-to {
-  -webkit-transform: translate(0, 5px);
-  -ms-transform: translate(0, 5px);
-  transform: translate(0, 5px);
+  transform: translateY(5px);
   opacity: 0;
 }
 
