@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+import store from './store';
+
 import Home from './views/Home.vue'
+import Login from './views/Login.vue'
+import User from './views/User.vue'
 import StudySets from './views/StudySets.vue'
 import Cards from './views/Cards.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -16,14 +21,34 @@ export default new Router({
       component: Home
     },
     {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/user/:id',
+      name: 'user',
+      component: User
+    },
+    {
       path: '/studysets',
       name: 'studysets',
       component: StudySets
     },
     {
-      path: '/studysets/:id',
+      path: '/studyset/:id',
       name: 'cards',
       component: Cards
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if(!store.state.isAuthenticated && to.path !== '/login') {
+    next('/login')
+  } else {
+    next()
+  }
+})
+
+export default router

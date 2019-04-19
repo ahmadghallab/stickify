@@ -3,8 +3,7 @@ import axios from 'axios'
 axios.defaults.baseURL = 'https://flashcards-backend.herokuapp.com/api/v1'
 
 axios.interceptors.request.use(function (config) {
-  const token = '626014c7db3b7d64a93a8d8102e9d4f157f368a2'
-  // const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token')
   if (token) {
     config.headers.Authorization = `Token ${token}`
   }
@@ -12,9 +11,9 @@ axios.interceptors.request.use(function (config) {
 })
 
 const appService = {
-  listStudySets (page) {
+  listUserStudySets (userId) {
     return new Promise((resolve, reject) => {
-      axios.get(`/studysets/?page=${page}`)
+      axios.get(`/users/${userId}/studysets/`)
         .then(response => {
           resolve(response.data)
         }).catch(error => {
@@ -34,7 +33,7 @@ const appService = {
   },
   createStudySet (data) {
     return new Promise((resolve, reject) => {
-      axios.post('/studysets/', data)
+      axios.post(`/users/${data.user}/studysets/`, data)
         .then(response => {
           resolve(response.data)
         }).catch(response => {
@@ -82,6 +81,36 @@ const appService = {
         })
     })
   },
+  retrieveUser (userId) {
+    return new Promise((resolve, reject) => {
+      axios.get(`/accounts/${userId}/`)
+        .then(response => {
+          resolve(response.data)
+        }).catch(error => {
+          reject(error.response)
+        })
+    })
+  },
+  login (credentials) {
+    return new Promise((resolve, reject) => {
+      axios.post('/accounts/auth/', credentials)
+        .then(response => {
+          resolve(response.data)
+        }).catch(error => {
+          reject(error.response)
+        })
+    })
+  },
+  createUser (data) {
+    return new Promise((resolve, reject) => {
+      axios.post('/accounts/create/', data)
+        .then(response => {
+          resolve(response.data)
+        }).catch(error => {
+          reject(error.response)
+        })
+    })
+  }
 }
 
 export default appService

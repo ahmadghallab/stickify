@@ -53,12 +53,11 @@ export default {
   width: 100%;
   pointer-events: auto;
 }
-.dialog-mask, .dialog-enter-active, .dialog-leave-active {
+.dialog-enter-active, .dialog-leave-active {
   transition: all .3s ease;
 }
 .dialog-enter, .dialog-leave-to {
   transform: translateY(5px);
   opacity: 0;
 }
-
 </style>
