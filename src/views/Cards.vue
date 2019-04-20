@@ -19,22 +19,38 @@
                   <div class="align-self-center text-center" v-if="finished" key="1">
                     <h1 class="font-weight-bold">Nice work</h1>
                     <p>You just studied {{ cards.length }} terms</p>
-                    <button class="btn green text-white">Start over</button>
+                    <button class="btn green text-white"
+                      @click="cardIdx = 0">Start over</button>
                   </div>
                   <div class="align-self-center" v-else key="2">
                     <transition name="card-slide" mode="out-in">
-                      <h1 class="align-self-center" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].definition.slice(0,255) }}</h1>
-                      <h1 class="align-self-center text-center" v-else key="2">{{ cards[cardIdx].term }}</h1>
+                      <h1 class="align-self-center text-center mb-0" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].term }}</h1>
+                      <h1 class="align-self-center mb-0"  key="2" v-else>{{ cards[cardIdx].definition.slice(0,255) }}</h1>
                     </transition>
                   </div>
                 </transition>
               </div>
               <div class="card__footer">
-                <kbd class="grey">←</kbd> <span class="text-muted mx-2">Prev</span>
-                <kbd class="grey">→</kbd> <span class="text-muted mx-2">Next</span>
-                <kbd class="grey">space</kbd> <span class="text-muted mx-2">Flip</span>
-                <kbd class="grey">p</kbd> <span class="text-muted mx-2">Play</span>
-                <kbd class="grey">h</kbd> <span class="text-muted mx-2">Shuffle</span>
+                <div class="row justify-content-between">
+                  <!-- <div class="col">
+                    <kbd class="grey">←</kbd> <span class="text-muted mx-2">Prev</span>
+                    <kbd class="grey">→</kbd> <span class="text-muted mx-2">Next</span>
+                    <kbd class="grey">space</kbd> <span class="text-muted mx-2">Flip</span>
+                    <kbd class="grey">p</kbd> <span class="text-muted mx-2">Play</span>
+                    <kbd class="grey">h</kbd> <span class="text-muted mx-2">Shuffle</span>
+                  </div> -->
+                  <div class="col-auto">
+                    <small class="text-muted font-weight-bold">Answer With </small>
+                    <a href="javascript:void(0)" 
+                      class="badge badge-pill grey mx-2 text-white"
+                      v-bind:class="{'green': answerWithTD}"
+                      @click="answerWith()">term</a>
+                    <a href="javascript:void(0)" 
+                      class="badge badge-pill grey text-white"
+                      v-bind:class="{'green': !answerWithTD}"
+                      @click="answerWith()">definition</a>
+                  </div>
+                </div>
               </div>
             </div>
           </transition>
@@ -70,17 +86,22 @@
               </a>
             </div>
             <div class="col-auto align-self-center">
-              <svg width="52" viewBox="0 0 72 72">
-                <g>
-                  <use class="progress__value" stroke="#b7c0c7" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" xlink:href="#circle">
-                    <circle id="circle" cx="36" cy="36" r="32" fill="#b7c0c7"></circle>
-                  </use>
-                  <use class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" xlink:href="#circle">
-                    <circle id="circle" cx="36" cy="36" r="32" fill="none"></circle>
-                  </use>
-                  <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle">{{ cardIdx+1 + '/' + cards.length }}</text>
-                </g>
-              </svg>
+                <svg width="52" viewBox="0 0 72 72">
+                  <g>
+                    <use class="progress__value" stroke="#b7c0c7" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" xlink:href="#circle">
+                      <circle id="circle" cx="36" cy="36" r="32" fill="#b7c0c7"></circle>
+                    </use>
+                    <use class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" xlink:href="#circle">
+                      <circle id="circle" cx="36" cy="36" r="32" fill="none"></circle>
+                    </use>
+                    <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" v-if="finished">
+                      End
+                    </text>
+                    <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" v-else >
+                      {{ cardIdx+1 + '/' + cards.length }}
+                    </text>
+                  </g>
+                </svg>
             </div>
             <div class="col-auto align-self-center">
               <a href="javascript:void(0)"
@@ -89,8 +110,7 @@
                 class="circle circle-md mr-2"
                 v-bind:class="{
                   'grey': !playCards, 
-                  'green': playCards, 
-                  'inactive': oneCard
+                  'green': playCards
                 }">
                 <svg class="icon" viewBox="0 0 511.999 511.999"   
                   style="enable-background:new 0 0 511.999 511.999;">
@@ -108,8 +128,7 @@
               <a href="javascript:void(0)"
                 @click="shuffle()"
                 v-shortkey="['h']" @shortkey="shuffle()" 
-                class="circle circle-md grey mr-2"
-                v-bind:class="{'inactive': oneCard}">
+                class="circle circle-md grey mr-2">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M494.246,359.453L432.084,297.8c-7.843-7.778-20.506-7.727-28.284,0.116c-7.778,7.843-7.726,20.506,0.116,28.284
@@ -306,14 +325,14 @@ export default {
       cardIdx: 0,
       listCardsLoader: true,
       retrieveStudySetLoader: true,
-      flipTermDefinition: false,
+      flipTermDefinition: true,
+      answerWithTD: false,
       playCards: false,
       slider: null,
       fliper: null,
       selectedCard: null,
       toggleUpdateCardModal: false,
       toggleDeleteCardModal: false,
-      // finished: false,
       colorPalette: ['purple', 'green', 'blue', 'brown', 'red', 'orange'],
       cards: []
     }
@@ -326,20 +345,16 @@ export default {
       return index => (this.cards[index].term && this.cards[index].definition && this.cards[index].color) ? false : true
     },
     cardProgress () {
-      let progressPercent = (this.cardIdx+1)/this.cards.length
-      return 201.06192982974676 * (1 - progressPercent)
+      if (!this.finished) {
+        const progressPercent = (this.cardIdx+1)/this.cards.length
+        return 201.06192982974676 * (1 - progressPercent)
+      }
     },
     firstCard () {
       return (this.cardIdx == 0) ? true : false
     },
-    lastCard () {
-      return (this.cardIdx + 1 == this.cards.length) ? true : false
-    },
     finished () {
       return (this.cardIdx == this.cards.length) ? true : false
-    },
-    oneCard () {
-      return (this.cards.length == 1) ? true : false
     }
   },
   watch: {
@@ -361,8 +376,12 @@ export default {
     }
   },
   methods: {
+    answerWith() {
+      this.answerWithTD = !this.answerWithTD
+      this.flipTermDefinition = !this.answerWithTD
+    },
     startShow () {
-      if (!this.oneCard) this.playCards = !this.playCards
+      this.playCards = !this.playCards
     },
     flipCard () {
       this.flipTermDefinition = !this.flipTermDefinition
@@ -430,22 +449,21 @@ export default {
       })
     },
     shuffle () {
-      if (!this.oneCard) {
-        let j, x, i
-        for (i = this.cards.length - 1; i > 0; i--) {
-          j = Math.floor(Math.random() * (i + 1))
-          x = this.cards[i]
-          this.cards[i] = this.cards[j]
-          this.cards[j] = x
-        }
-        this.cardIdx = 0
+      for (let i = this.cards.length - 1; i > 0; i--) {
+        let randomIndex = Math.floor(Math.random() * i)
+        
+        let temp = this.cards[i]
+        this.$set(this.cards, i, this.cards[randomIndex])
+        this.$set(this.cards, randomIndex, temp)
       }
     },
     changeCard (dir) {
-      if (dir == 'next') {
+      if (dir == 'next' && !this.finished) {
+        this.flipTermDefinition = !this.answerWithTD
         this.cardIdx = this.cardIdx + 1
       }  
       if (dir == 'prev' && !this.firstCard) {
+        this.flipTermDefinition = !this.answerWithTD
         this.cardIdx = this.cardIdx - 1
       }
     }
