@@ -13,10 +13,20 @@
         <div v-if="cards.length">
           <transition name="card-slide" mode="out-in">
             <div :key="cardIdx">
-              <div class="card__header text-white flashcard d-flex justify-content-center" v-bind:class="cards[cardIdx].color">
+              <div class="card__header text-white flashcard d-flex justify-content-center grey" 
+                v-bind:class="[finished ? 'grey' : cards[cardIdx].color]">
                 <transition name="card-slide" mode="out-in">
-                  <h1 class="align-self-center" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].definition.slice(0,255) }}</h1>
-                  <h1 class="align-self-center text-center" v-else key="2">{{ cards[cardIdx].term }}</h1>
+                  <div class="align-self-center text-center" v-if="finished" key="1">
+                    <h1 class="font-weight-bold">Nice work</h1>
+                    <p>You just studied {{ cards.length }} terms</p>
+                    <button class="btn green text-white">Start over</button>
+                  </div>
+                  <div class="align-self-center" v-else key="2">
+                    <transition name="card-slide" mode="out-in">
+                      <h1 class="align-self-center" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].definition.slice(0,255) }}</h1>
+                      <h1 class="align-self-center text-center" v-else key="2">{{ cards[cardIdx].term }}</h1>
+                    </transition>
+                  </div>
                 </transition>
               </div>
               <div class="card__footer">
@@ -46,7 +56,7 @@
               </a>
               <a href="javascript:void(0)"
                 class="circle circle-md grey ml-1"
-                v-bind:class="{'inactive': lastCard}"
+                v-bind:class="{'inactive': finished}"
                 @click="changeCard('next')"
                 v-shortkey="['arrowright']" @shortkey="changeCard('next')">
                 <svg class="icon" viewBox="0 0 512 512">
@@ -303,6 +313,7 @@ export default {
       selectedCard: null,
       toggleUpdateCardModal: false,
       toggleDeleteCardModal: false,
+      // finished: false,
       colorPalette: ['purple', 'green', 'blue', 'brown', 'red', 'orange'],
       cards: []
     }
@@ -324,6 +335,9 @@ export default {
     lastCard () {
       return (this.cardIdx + 1 == this.cards.length) ? true : false
     },
+    finished () {
+      return (this.cardIdx == this.cards.length) ? true : false
+    },
     oneCard () {
       return (this.cards.length == 1) ? true : false
     }
@@ -342,7 +356,7 @@ export default {
         clearInterval(this.fliper)
       }
     },
-    lastCard: function (val) {
+    finished: function (val) {
       if (val) this.playCards = false
     }
   },
@@ -428,7 +442,7 @@ export default {
       }
     },
     changeCard (dir) {
-      if (dir == 'next' && !this.lastCard) {
+      if (dir == 'next') {
         this.cardIdx = this.cardIdx + 1
       }  
       if (dir == 'prev' && !this.firstCard) {
