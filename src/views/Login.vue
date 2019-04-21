@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row justify-content-center">
-      <div class="col-md-8">
+      <div class="col-md-8 fade-up">
         <transition name="card-slide" mode="out-in">
           <div v-if="toggleSigninSignup" key="1">
             <div class="default-card red text-white" v-if="userNotLoggedIn">

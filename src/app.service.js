@@ -81,6 +81,26 @@ const appService = {
         })
     })
   },
+  updateStudySet (data) {
+    return new Promise((resolve, reject) => {
+      axios.patch(`/studysets/${data.id}/`, data)
+        .then(response => {
+          resolve(response.data)
+        }).catch(response => {
+          reject(response.status)
+        })
+    })
+  },
+  deleteStudySet (studySetId) {
+    return new Promise((resolve, reject) => {
+      axios.delete(`/studysets/${studySetId}/`)
+        .then(response => {
+          resolve(response.data)
+        }).catch(error => {
+          reject(error.response)
+        })
+    })
+  },
   retrieveUser (userId) {
     return new Promise((resolve, reject) => {
       axios.get(`/accounts/${userId}/`)

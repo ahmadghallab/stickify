@@ -2,14 +2,14 @@
   <div class="row justify-content-center">
     <div class="col">
       <Loader v-if="retrieveStudySetLoader" />
-      <div class="default-card" v-else>
+      <div class="default-card fade-up" v-else>
         <h4 class="font-weight-bold">{{ studySetTitle }}</h4>
         <p class="text-muted mb-0">
           {{ cards.length ? cards.length + ' cards' : 'No cards yet' }}
         </p>
       </div>
       <Loader v-if="listCardsLoader" />
-      <div v-else>
+      <div class="fade-up" v-else>
         <div v-if="cards.length">
           <transition name="card-slide" mode="out-in">
             <div :key="cardIdx">
@@ -24,7 +24,7 @@
                   </div>
                   <div class="align-self-center" v-else key="2">
                     <transition name="card-slide" mode="out-in">
-                      <h1 class="align-self-center text-center mb-0" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].term }}</h1>
+                      <h1 class="align-self-center text-center mb-0 font-weight-bold" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].term }}</h1>
                       <h1 class="align-self-center mb-0"  key="2" v-else>{{ cards[cardIdx].definition.slice(0,255) }}</h1>
                     </transition>
                   </div>
@@ -32,23 +32,27 @@
               </div>
               <div class="card__footer">
                 <div class="row justify-content-between">
-                  <!-- <div class="col">
-                    <kbd class="grey">←</kbd> <span class="text-muted mx-2">Prev</span>
-                    <kbd class="grey">→</kbd> <span class="text-muted mx-2">Next</span>
-                    <kbd class="grey">space</kbd> <span class="text-muted mx-2">Flip</span>
-                    <kbd class="grey">p</kbd> <span class="text-muted mx-2">Play</span>
-                    <kbd class="grey">h</kbd> <span class="text-muted mx-2">Shuffle</span>
-                  </div> -->
-                  <div class="col-auto">
-                    <small class="text-muted font-weight-bold">Answer With </small>
+                  <div class="col-auto align-self-center">
+                    <small class="text-muted font-weight-bold d-block ">Answer With </small>
                     <a href="javascript:void(0)" 
-                      class="badge badge-pill grey mx-2 text-white"
+                      class="badge badge-pill grey mr-2 text-white"
                       v-bind:class="{'green': answerWithTD}"
                       @click="answerWith()">term</a>
                     <a href="javascript:void(0)" 
                       class="badge badge-pill grey text-white"
                       v-bind:class="{'green': !answerWithTD}"
                       @click="answerWith()">definition</a>
+                  </div>
+                  <div class="col-auto">
+                    <a href="javascript:void(0)" 
+                      class="circle circle-md grey"
+                      v-bind:class="{'inactive': finished}"
+                      @click="flipCard"
+                      v-shortkey="['space']" @shortkey="flipCard">
+                      <svg class="icon" viewBox="0 0 512 512">
+                        <path d="m63.613281 190.464844c-11.371093-11.371094-17.613281-26.4375-17.613281-42.464844s6.242188-31.09375 17.574219-42.425781l100.324219-99.757813c7.832031-7.785156 20.496093-7.75 28.285156.082032 7.789062 7.832031 7.75 20.496093-.082032 28.28125l-100.285156 99.71875c-3.734375 3.738281-5.816406 8.757812-5.816406 14.101562 0 5.339844 2.082031 10.363281 5.859375 14.140625l100.242187 99.675781c7.832032 7.789063 7.871094 20.453125.082032 28.285156-3.910156 3.929688-9.046875 5.898438-14.183594 5.898438-5.101562 0-10.199219-1.9375-14.101562-5.816406zm428.386719-62.464844h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20s-8.953125-20-20-20zm-143.898438 93.816406c-7.832031-7.785156-20.496093-7.75-28.285156.082032-7.789062 7.832031-7.75 20.496093.082032 28.28125l100.242187 99.679687c3.777344 3.773437 5.859375 8.796875 5.859375 14.140625 0 5.339844-2.082031 10.363281-5.816406 14.101562l-100.285156 99.714844c-7.832032 7.789063-7.871094 20.453125-.082032 28.285156 3.910156 3.929688 9.046875 5.898438 14.183594 5.898438 5.097656 0 10.199219-1.9375 14.101562-5.816406l100.324219-99.757813c11.332031-11.332031 17.574219-26.398437 17.574219-42.425781s-6.242188-31.09375-17.613281-42.46875zm18.898438 142.183594c0-11.046875-8.953125-20-20-20h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20zm0 0"/>
+                      </svg>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -128,7 +132,7 @@
               <a href="javascript:void(0)"
                 @click="shuffle()"
                 v-shortkey="['h']" @shortkey="shuffle()" 
-                class="circle circle-md grey mr-2">
+                class="circle circle-md grey">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M494.246,359.453L432.084,297.8c-7.843-7.778-20.506-7.727-28.284,0.116c-7.778,7.843-7.726,20.506,0.116,28.284
@@ -148,13 +152,7 @@
                   </g>
                 </svg>
               </a>
-              <a href="javascript:void(0)" class="circle circle-md grey"
-                @click="flipCard"
-                v-shortkey="['space']" @shortkey="flipCard">
-                <svg class="icon" viewBox="0 0 512 512">
-                  <path d="m63.613281 190.464844c-11.371093-11.371094-17.613281-26.4375-17.613281-42.464844s6.242188-31.09375 17.574219-42.425781l100.324219-99.757813c7.832031-7.785156 20.496093-7.75 28.285156.082032 7.789062 7.832031 7.75 20.496093-.082032 28.28125l-100.285156 99.71875c-3.734375 3.738281-5.816406 8.757812-5.816406 14.101562 0 5.339844 2.082031 10.363281 5.859375 14.140625l100.242187 99.675781c7.832032 7.789063 7.871094 20.453125.082032 28.285156-3.910156 3.929688-9.046875 5.898438-14.183594 5.898438-5.101562 0-10.199219-1.9375-14.101562-5.816406zm428.386719-62.464844h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20s-8.953125-20-20-20zm-143.898438 93.816406c-7.832031-7.785156-20.496093-7.75-28.285156.082032-7.789062 7.832031-7.75 20.496093.082032 28.28125l100.242187 99.679687c3.777344 3.773437 5.859375 8.796875 5.859375 14.140625 0 5.339844-2.082031 10.363281-5.816406 14.101562l-100.285156 99.714844c-7.832032 7.789063-7.871094 20.453125-.082032 28.285156 3.910156 3.929688 9.046875 5.898438 14.183594 5.898438 5.097656 0 10.199219-1.9375 14.101562-5.816406l100.324219-99.757813c11.332031-11.332031 17.574219-26.398437 17.574219-42.425781s-6.242188-31.09375-17.613281-42.46875zm18.898438 142.183594c0-11.046875-8.953125-20-20-20h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20zm0 0"/>
-                </svg>
-              </a>
+              
             </div>
           </div>
           <div class="default-card" v-for="(card, index) in cards" v-bind:key="index">
@@ -203,8 +201,10 @@
                               autocomplete="off" placeholder="Term">
                           </div>
                           <div class="form-group col-12">
-                            <textarea id="selectedCardDefinition" v-model="card.definition" 
-                              class="form-control" 
+                            <textarea id="selectedCardDefinition" 
+                              v-model="card.definition" 
+                              class="form-control"
+                              rows="3" style="resize:none;" 
                               placeholder="Enter Definition"></textarea>
                           </div>
                           <div class="form-group col-12">
@@ -257,46 +257,48 @@
           </div>
         </div>
         <span class="verline"></span>
-        <div class="card__header grey text-white"
-          v-bind:class="cardColor">
-          <h5 class="mb-0 font-weight-bold">New Card</h5>
-        </div>
-        <div class="card__footer">
-          <form v-on:submit.prevent="createCard()">
-            <div class="form-row">
-              <div class="form-group col-12">
-                <input id="cardTerm" v-model="cardTerm" 
-                  class="form-control"
-                  autocomplete="off" 
-                  placeholder="Enter term">
+        <div class="fade-up">
+          <div class="card__header grey text-white"
+            v-bind:class="cardColor">
+            <h5 class="mb-0 font-weight-bold">New Card</h5>
+          </div>
+          <div class="card__footer">
+            <form v-on:submit.prevent="createCard()">
+              <div class="form-row">
+                <div class="form-group col-12">
+                  <input id="cardTerm" v-model="cardTerm" 
+                    class="form-control"
+                    autocomplete="off" 
+                    placeholder="Enter term">
+                </div>
+                <div class="form-group col-12">
+                  <textarea id="cardDefinition" v-model="cardDefinition" 
+                    class="form-control"
+                    autocomplete="off" rows="3" style="resize:none;"
+                    placeholder="Enter Definition"></textarea>
+                </div>
+                <div class="form-group col-12">
+                  <input type="hidden" v-model="cardColor">
+                  <a href="javascript:void(0)" 
+                    v-for="(color, idx) in colorPalette" v-bind:key="idx"
+                    class="circle circle-md align-top mr-1 mt-1"
+                    v-bind:class="color"
+                    @click="selectColor(color)">
+                    <svg v-if="cardColor == color" viewBox="0 -49 512.00075 512" class="icon">
+                      <path d="m190.476562 413.828125c-20.628906 0-40.503906-8.0625-55.347656-22.652344l-129.148437-126.910156c-7.878907-7.742187-7.988281-20.40625-.246094-28.28125 7.742187-7.878906 20.40625-7.992187 28.285156-.25l129.144531 126.910156c8.105469 7.964844 19.246094 11.992188 30.570313 11.050781 11.324219-.945312 21.648437-6.757812 28.324219-15.953124l253.757812-349.492188c6.488282-8.9375 18.996094-10.921875 27.933594-4.433594 8.9375 6.492188 10.921875 19 4.433594 27.9375l-253.757813 349.488282c-13.523437 18.625-34.433593 30.402343-57.371093 32.3125-2.195313.183593-4.394532.273437-6.578126.273437zm0 0"/>
+                    </svg>
+                  </a>
+                </div>
+                <div class="col-12 mt-3">
+                  <button type="submit" class="btn grey text-white"
+                    v-bind:class="cardColor"
+                    :disabled="newCardValidator || creatingCard">
+                    {{ creatingCard ? 'Creating' : 'Create' }}
+                  </button>
+                </div>
               </div>
-              <div class="form-group col-12">
-                <textarea id="cardDefinition" v-model="cardDefinition" 
-                  class="form-control"
-                  autocomplete="off" 
-                  placeholder="Enter Definition"></textarea>
-              </div>
-              <div class="form-group col-12">
-                <input type="hidden" v-model="cardColor">
-                <a href="javascript:void(0)" 
-                  v-for="(color, idx) in colorPalette" v-bind:key="idx"
-                  class="circle circle-md align-top mr-1 mt-1"
-                  v-bind:class="color"
-                  @click="selectColor(color)">
-                  <svg v-if="cardColor == color" viewBox="0 -49 512.00075 512" class="icon">
-                    <path d="m190.476562 413.828125c-20.628906 0-40.503906-8.0625-55.347656-22.652344l-129.148437-126.910156c-7.878907-7.742187-7.988281-20.40625-.246094-28.28125 7.742187-7.878906 20.40625-7.992187 28.285156-.25l129.144531 126.910156c8.105469 7.964844 19.246094 11.992188 30.570313 11.050781 11.324219-.945312 21.648437-6.757812 28.324219-15.953124l253.757812-349.492188c6.488282-8.9375 18.996094-10.921875 27.933594-4.433594 8.9375 6.492188 10.921875 19 4.433594 27.9375l-253.757813 349.488282c-13.523437 18.625-34.433593 30.402343-57.371093 32.3125-2.195313.183593-4.394532.273437-6.578126.273437zm0 0"/>
-                  </svg>
-                </a>
-              </div>
-              <div class="col-12 mt-3">
-                <button type="submit" class="btn grey text-white"
-                  v-bind:class="cardColor"
-                  :disabled="newCardValidator || creatingCard">
-                  {{ creatingCard ? 'Creating' : 'Create' }}
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -339,16 +341,23 @@ export default {
   },
   computed: {
     newCardValidator () {
-      return (this.cardTerm && this.cardDefinition && this.cardColor) ? false : true
+      return (this.cardTerm 
+        && this.cardDefinition 
+        && this.cardColor
+        && this.cardTerm.length < 50
+        && this.cardDefinition.length < 250) ? false : true
     },
     updateCardValidator () {
-      return index => (this.cards[index].term && this.cards[index].definition && this.cards[index].color) ? false : true
+      return index => (this.cards[index].term 
+        && this.cards[index].definition 
+        && this.cards[index].color
+        && this.cards[index].term.length < 50
+        && this.cards[index].definition.length < 250) ? false : true
     },
     cardProgress () {
-      if (!this.finished) {
-        const progressPercent = (this.cardIdx+1)/this.cards.length
-        return 201.06192982974676 * (1 - progressPercent)
-      }
+      if (this.finished) return
+      const progressPercent = (this.cardIdx+1)/this.cards.length
+      return 201.06192982974676 * (1 - progressPercent)
     },
     firstCard () {
       return (this.cardIdx == 0) ? true : false
@@ -384,7 +393,7 @@ export default {
       this.playCards = !this.playCards
     },
     flipCard () {
-      this.flipTermDefinition = !this.flipTermDefinition
+      if (!this.finished) this.flipTermDefinition = !this.flipTermDefinition
     },
     selectColor(color) {
       this.cardColor = color
