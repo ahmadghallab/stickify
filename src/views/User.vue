@@ -68,7 +68,7 @@
                         @click="updatePublicPrivate(idx)">private</a>
                     </div>
                     <div class="col-12 mt-3">
-                      <button type="submit" class="btn grey text-white"
+                      <button type="submit" class="btn green text-white"
                         :disabled="updateStudySetValidator(idx) || updatingStudySet">
                         {{ updatingStudySet ? 'Updating' : 'Update' }}
                       </button>
@@ -105,7 +105,7 @@
     </div>
     <span class="verline"></span>
     <div class="fade-up">
-      <div class="card__header grey text-white">
+      <div class="card__header green text-white">
         <h5 class="mb-0 font-weight-bold">New Study Set</h5>
       </div>
       <div class="card__footer">
@@ -121,7 +121,7 @@
             <div class="form-group col-12">
               <input type="hidden" v-model="publicPrivate">
               <a href="javascript:void(0)" 
-                class="badge badge-pill grey mr-1 text-white"
+                class="badge badge-pill grey mr-2 text-white"
                 v-bind:class="{'green': publicPrivate}"
                 @click="togglePublicPrivate()">public</a>
               <a href="javascript:void(0)" 
@@ -130,7 +130,7 @@
                 @click="togglePublicPrivate()">private</a>
             </div>
             <div class="col-12 mt-3">
-              <button type="submit" class="btn grey text-white" :disabled="newStudySetValidator || creatingStudySet">
+              <button type="submit" class="btn green text-white" :disabled="newStudySetValidator || creatingStudySet">
                 {{ creatingStudySet ? 'Creating' : 'Create' }}
               </button>
             </div>

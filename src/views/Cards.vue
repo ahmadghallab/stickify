@@ -13,19 +13,13 @@
         <div v-if="cards.length">
           <transition name="card-slide" mode="out-in">
             <div :key="cardIdx">
-              <div class="card__header text-white flashcard d-flex justify-content-center grey" 
-                v-bind:class="[finished ? 'grey' : cards[cardIdx].color]">
+              <div class="card__header text-white flashcard d-flex justify-content-center" 
+                v-bind:class="cards[cardIdx].color">
                 <transition name="card-slide" mode="out-in">
-                  <div class="align-self-center text-center" v-if="finished" key="1">
-                    <h1 class="font-weight-bold">Nice work</h1>
-                    <p>You just studied {{ cards.length }} terms</p>
-                    <button class="btn green text-white"
-                      @click="cardIdx = 0">Start over</button>
-                  </div>
-                  <div class="align-self-center" v-else key="2">
+                  <div class="align-self-center" >
                     <transition name="card-slide" mode="out-in">
                       <h1 class="align-self-center text-center mb-0 font-weight-bold" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].term }}</h1>
-                      <h1 class="align-self-center mb-0"  key="2" v-else>{{ cards[cardIdx].definition.slice(0,255) }}</h1>
+                      <h1 class="align-self-center mb-0"  key="2" v-else>{{ cards[cardIdx].definition }}</h1>
                     </transition>
                   </div>
                 </transition>
@@ -46,7 +40,6 @@
                   <div class="col-auto">
                     <a href="javascript:void(0)" 
                       class="circle circle-md grey"
-                      v-bind:class="{'inactive': finished}"
                       @click="flipCard"
                       v-shortkey="['space']" @shortkey="flipCard">
                       <svg class="icon" viewBox="0 0 512 512">
@@ -61,8 +54,7 @@
           <div class="row justify-content-between mb-custom">
             <div class="col-auto align-self-center">
               <a href="javascript:void(0)"
-                class="circle circle-md grey mr-1" 
-                v-bind:class="{'inactive': firstCard}"
+                class="circle circle-md grey mr-1"
                 @click="changeCard('prev')"
                 v-shortkey="['arrowleft']" @shortkey="changeCard('prev')">
                 <svg class="icon" viewBox="0 0 512 512">
@@ -76,7 +68,6 @@
               </a>
               <a href="javascript:void(0)"
                 class="circle circle-md grey ml-1"
-                v-bind:class="{'inactive': finished}"
                 @click="changeCard('next')"
                 v-shortkey="['arrowright']" @shortkey="changeCard('next')">
                 <svg class="icon" viewBox="0 0 512 512">
@@ -98,10 +89,7 @@
                     <use class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" xlink:href="#circle">
                       <circle id="circle" cx="36" cy="36" r="32" fill="none"></circle>
                     </use>
-                    <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" v-if="finished">
-                      End
-                    </text>
-                    <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" v-else >
+                    <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" >
                       {{ cardIdx+1 + '/' + cards.length }}
                     </text>
                   </g>
@@ -290,7 +278,8 @@
                   </a>
                 </div>
                 <div class="col-12 mt-3">
-                  <button type="submit" class="btn grey text-white"
+                  <button type="submit" 
+                    class="btn grey text-white"
                     v-bind:class="cardColor"
                     :disabled="newCardValidator || creatingCard">
                     {{ creatingCard ? 'Creating' : 'Create' }}
@@ -355,14 +344,13 @@ export default {
         && this.cards[index].definition.length < 250) ? false : true
     },
     cardProgress () {
-      if (this.finished) return
       const progressPercent = (this.cardIdx+1)/this.cards.length
       return 201.06192982974676 * (1 - progressPercent)
     },
-    firstCard () {
-      return (this.cardIdx == 0) ? true : false
+    start () {
+      return (this.cardIdx == -1) ? true : false
     },
-    finished () {
+    end () {
       return (this.cardIdx == this.cards.length) ? true : false
     }
   },
@@ -380,8 +368,11 @@ export default {
         clearInterval(this.fliper)
       }
     },
-    finished: function (val) {
-      if (val) this.playCards = false
+    end: function (val) {
+      if (val) this.cardIdx = 0
+    },
+    start: function (val) {
+      if (val) this.cardIdx = this.cards.length - 1
     }
   },
   methods: {
@@ -393,7 +384,7 @@ export default {
       this.playCards = !this.playCards
     },
     flipCard () {
-      if (!this.finished) this.flipTermDefinition = !this.flipTermDefinition
+      if (!this.end) this.flipTermDefinition = !this.flipTermDefinition
     },
     selectColor(color) {
       this.cardColor = color
@@ -467,12 +458,11 @@ export default {
       }
     },
     changeCard (dir) {
-      if (dir == 'next' && !this.finished) {
-        this.flipTermDefinition = !this.answerWithTD
+      this.flipTermDefinition = !this.answerWithTD
+      if (dir == 'next') {
         this.cardIdx = this.cardIdx + 1
       }  
-      if (dir == 'prev' && !this.firstCard) {
-        this.flipTermDefinition = !this.answerWithTD
+      if (dir == 'prev') {
         this.cardIdx = this.cardIdx - 1
       }
     }

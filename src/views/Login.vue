@@ -7,7 +7,7 @@
             <div class="default-card red text-white" v-if="userNotLoggedIn">
               <h6 class="mb-0 font-weight-bold">Your credentials are incorrect</h6>
             </div>
-            <div class="card__header grey text-white">
+            <div class="card__header green text-white">
               <h5 class="font-weight-bold mb-0">Have an account? Login</h5>
             </div>
             <div class="card__footer">
@@ -29,7 +29,7 @@
                       id="loginPassword">
                   </div>
                   <div class="form-group col-12 mt-2">
-                    <button type="submit" class="btn grey text-white" :disabled="loginValidator || loggingIn">{{ loggingIn ? 'Logging' : 'Login' }}</button>
+                    <button type="submit" class="btn green text-white" :disabled="loginValidator || loggingIn">{{ loggingIn ? 'Logging' : 'Login' }}</button>
                   </div>
                   <div class="col-12">
                     <a href="javascript:void(0)" 
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div key="2" v-else>
-            <div class="card__header grey text-white">
+            <div class="card__header green text-white">
               <h5 class="font-weight-bold mb-0">Don't have an account? Signup</h5>
             </div>
             <div class="card__footer">
@@ -82,7 +82,7 @@
                       id="newUserPasswordConfirm">
                   </div>
                   <div class="form-group col-12 mt-3">
-                    <button type="submit" class="btn grey text-white" :disabled="createUserValidator || creatingUser" @click="createUser()">{{ creatingUser ? 'Creating' : 'Create' }}</button>
+                    <button type="submit" class="btn green text-white" :disabled="createUserValidator || creatingUser" @click="createUser()">{{ creatingUser ? 'Creating' : 'Create' }}</button>
                   </div>
                   <div class="col-12">
                     <a href="javascript:void(0)" 

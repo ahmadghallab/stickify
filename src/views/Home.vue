@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-between">
     <div class="col-auto align-self-center">
-      <img alt="Decoration" src="../assets/decoration_left.png" width="200">
+      <img alt="Decoration" src="../assets/left.png" width="200">
     </div>
     <div class="col align-self-center">
       <h2 class="mb-3 font-weight-bold">Welcome</h2>
@@ -10,7 +10,7 @@
       </p>
     </div>
     <div class="col-auto align-self-center">
-      <img alt="Decoration" src="../assets/decoration_rt.png" width="200">
+      <img alt="Decoration" src="../assets/right.png" width="200">
     </div>
   </div>
 </template>

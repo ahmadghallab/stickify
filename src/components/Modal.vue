@@ -1,8 +1,8 @@
 <template>
 <transition name="dialog">
-  <div class="dialog-mask fade-up">
+  <div class="dialog-mask">
     <div class="dialog-wrapper" v-bind:style="{ 'max-width': width}">
-      <div class="dialog-container">
+      <div class="dialog-container fade-up">
         <!-- Header -->
         <div class="dialog-header">
           <slot name="header"></slot>
@@ -54,7 +54,7 @@ export default {
   pointer-events: auto;
 }
 .mask, .dialog-leave-active {
-  transition: all .3s ease;
+  transition: all .2s ease;
 }
 .dialog-leave-to {
   transform: translateY(10px);
