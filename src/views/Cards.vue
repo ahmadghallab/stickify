@@ -169,7 +169,7 @@
                 <div class="form-group col-12">
                   <textarea id="cardDefinition" v-model="cardDefinition" 
                     class="form-control"
-                    autocomplete="off" rows="5" style="resize:none;"
+                    autocomplete="off" rows="4" style="resize:none;"
                     placeholder="Enter Definition"></textarea>
                 </div>
                 <div class="form-group col-12">
@@ -395,7 +395,7 @@ export default {
     },
     listCards () {
       appService.listCards(this.id).then(data => {
-        this.cards = data.results
+        this.cards = data
         this.listCardsLoader = false
       })
     },
