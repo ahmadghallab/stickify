@@ -19,7 +19,9 @@
                   <div class="align-self-center" >
                     <transition name="card-slide" mode="out-in">
                       <h1 class="align-self-center text-center mb-0 font-weight-bold" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].term }}</h1>
-                      <h1 class="align-self-center mb-0"  key="2" v-else>{{ cards[cardIdx].definition }}</h1>
+                      <h1 class="align-self-center mb-0 text-center"  
+                        key="2" 
+                        v-html="formatDefinition(cards[cardIdx].definition)" v-else></h1>
                     </transition>
                   </div>
                 </transition>
@@ -151,7 +153,7 @@
               </div>
               <div class="col align-self-center">
                 <h5 class="font-weight-bold">{{ card.term }}</h5>
-                <p class="mb-0 text-muted">{{ card.definition.slice(0,255) }}</p>
+                <p class="mb-0 text-muted" v-html="formatDefinition(card.definition)"></p>
               </div>
               <div class="col-auto align-self-center">
                 <a href="javascript:void(0)"
@@ -190,7 +192,8 @@
                           </div>
                           <div class="form-group col-12">
                             <textarea id="selectedCardDefinition" 
-                              v-model="card.definition" 
+                              v-model="card.definition"
+                              @input="formatDefinition()" 
                               class="form-control"
                               rows="3" style="resize:none;" 
                               placeholder="Enter Definition"></textarea>
@@ -256,7 +259,8 @@
                 <div class="form-group col-12">
                   <input id="cardTerm" v-model="cardTerm" 
                     class="form-control"
-                    autocomplete="off" 
+                    autocomplete="off"
+                    v-on:keydown.shift.enter="createCard()" 
                     placeholder="Enter term">
                 </div>
                 <div class="form-group col-12">
@@ -316,8 +320,8 @@ export default {
       cardIdx: 0,
       listCardsLoader: true,
       retrieveStudySetLoader: true,
-      flipTermDefinition: true,
-      answerWithTD: false,
+      flipTermDefinition: false,
+      answerWithTD: true,
       playCards: false,
       slider: null,
       fliper: null,
@@ -359,10 +363,10 @@ export default {
       if (val) {
         this.fliper = setInterval(() => {
           this.flipCard()
-        }, 5000)
+        }, 10000)
         this.slider = setInterval(() => {
           this.changeCard('next')
-        }, 10000)
+        }, 20000)
       } else {
         clearInterval(this.slider)
         clearInterval(this.fliper)
@@ -376,6 +380,16 @@ export default {
     }
   },
   methods: {
+    formatDefinition (cardDefinition) {
+      let counter = 0
+      return cardDefinition.replace(/\*([^*]+)\*/g, "<b>$1</b>")
+        .replace(/--/g, () => {
+            return ++counter + ". "
+          })
+        .replace(/.+?[.?!](\s|$)/g, (txt) => {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        })
+    },
     answerWith() {
       this.answerWithTD = !this.answerWithTD
       this.flipTermDefinition = !this.answerWithTD

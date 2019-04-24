@@ -54,10 +54,10 @@ export default {
   pointer-events: auto;
 }
 .mask, .dialog-leave-active {
-  transition: all .2s ease;
+  transition: all .3s ease;
 }
 .dialog-leave-to {
-  transform: translateY(10px);
+  transform: translateY(5px);
   opacity: 0;
 }
 </style>
