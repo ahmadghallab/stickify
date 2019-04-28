@@ -30,6 +30,9 @@ body, a, a:hover, a:focus, a:active {
   min-height: 450px;
   white-space: pre-line;
 }
+.answer-list {
+  cursor: pointer;
+}
 .mb-custom {
   margin-bottom: 30px;
 }
@@ -56,6 +59,13 @@ body, a, a:hover, a:focus, a:active {
   margin: 0 auto 30px;
   width: 10px;
   height: 47px;
+  background: #d4d9dd;
+  border-radius: 5px;
+}
+.hrline {
+  display: block;
+  height: 10px;
+  width: 47px;
   background: #d4d9dd;
   border-radius: 5px;
 }
@@ -140,12 +150,6 @@ body, a, a:hover, a:focus, a:active {
   border-color: #b2bbbd;
   background-color: transparent !important;
 }
-.search-box {
-  border-radius: 25px;
-  background-color: #fff;
-  border-color: #fff;
-  padding-left: .85rem;
-}
 .btn, a.btn {
   padding: 0.5rem 1.2rem;
   font-size: 14px;
@@ -157,13 +161,8 @@ body, a, a:hover, a:focus, a:active {
   opacity: 0.7;
 }
 .btn[disabled], .inactive {
-  color: #fff !important;
   opacity: 0.5 !important;
   cursor: not-allowed;
-}
-.btn-lg {
-  padding: 25px;
-  font-size: 1.2rem;
 }
 ::placeholder {
   color: #b2bbbd !important;
