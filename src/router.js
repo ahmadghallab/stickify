@@ -7,7 +7,7 @@ import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import User from './views/User.vue'
 import Cards from './views/Cards.vue'
-import Learn from './views/Learn.vue'
+import Test from './views/Test.vue'
 
 Vue.use(Router)
 
@@ -36,9 +36,9 @@ const router = new Router({
       component: Cards
     },
     {
-      path: '/studyset/:id/learn',
-      name: 'learn',
-      component: Learn
+      path: '/studyset/:id/test',
+      name: 'test',
+      component: Test
     }
   ]
 })

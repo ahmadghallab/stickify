@@ -13,9 +13,21 @@
         <div v-if="cards.length">
           <transition name="card-slide" mode="out-in">
             <div :key="cardIdx">
-              <div class="default-card flashcard white-space d-flex justify-content-center">
+              <div class="card__header"></div>
+              <div class="card__body purple text-white flashcard white-space d-flex justify-content-center">
                 <transition name="card-slide" mode="out-in">
-                  <div class="align-self-center" >
+                  <div class="align-self-center text-center" v-if="end" key="1">
+                    <svg width="64" height="64">
+                      <path fill="#6E8189" d="M51.066 8.161c-1.554 2.688-2.037 6.505-2.037 6.505s3.063-2.327 4.615-5.016c2.514-4.354-.066-5.843-2.578-1.489zm-7.412-2.39c-.002 3.104 1.486 6.652 1.486 6.652s1.49-3.549 1.492-6.652c.001-5.028-2.98-5.028-2.978 0zm14.242 6.504c-2.689 1.551-5.016 4.615-5.016 4.615s3.816-.484 6.505-2.036c4.355-2.514 2.865-5.094-1.489-2.579z"></path><path fill="#BD8700" d="M41.453 20.017c-.637-1.689-4.455-.704-3.934 3.934.558 4.939 1.596 5.424.596 8.355L19.006 13.197c-3.491-3.492-8.427 1.443-4.94 4.936l-1.93-1.93c-3.549-3.55-8.486 1.389-4.938 4.939l.906.908c-3.443-3.445-8.383 1.494-4.936 4.938l5.908 5.91c-3.422-3.422-8.361 1.516-4.937 4.938l18.082 18.113c5.915 5.914 14.565 9.287 22.32 1.533 12.93-12.928 1.668-24.842-3.088-37.465z"></path><path fill="#FDCA47" d="M43.255 20.857c.589 5.21 1.683 5.721.629 8.814l-3.379-2.874L19.904 47.4l7.214 7.215c6.241 6.24 15.366 9.798 23.547 1.617 13.639-13.639 1.759-26.208-3.26-39.525-.672-1.782-4.7-.742-4.15 4.15z"></path><path fill="#CC9200" d="M43.896 17.285c1.004-.6 2.137-.407 2.467.465 4.934 13.095 16.488 25.467 3.902 38.845.135-.127.27-.232.401-.364 13.637-13.637 1.757-26.206-3.262-39.523-.455-1.204-2.438-1.116-3.508.577z"></path><path fill="#FDCA47" d="M18.513 14.722L37.632 33.84l4.946-4.948L23.724 9.513c-3.685-3.686-8.894 1.524-5.211 5.209z"></path><path fill="#CC9200" d="M17.884 9.925c1.322-.893 3.2-.967 4.796.627L42.838 30.71l1.042-1.041L23.722 9.51c-2.091-2.091-4.669-1.318-5.838.415z"></path><path fill="#FDCA47" d="M11.266 17.894l22.197 22.197 5.211-5.21-22.198-22.197c-3.745-3.746-8.954 1.464-5.21 5.21z"></path><path fill="#CC9200" d="M10.592 13.051c1.324-.889 3.22-.949 4.838.672l16.991 16.99 1.042-1.041-16.991-16.991c-2.124-2.124-4.714-1.367-5.88.37z"></path><path fill="#FDCA47" d="M7.015 24.061l20.197 20.198 5.209-5.21-20.198-20.197c-3.633-3.634-8.843 1.576-5.208 5.209z"></path><path fill="#FDCA47" d="M8.041 35.506l16.044 16.046 5.21-5.209L13.25 30.296c-3.611-3.611-8.821 1.599-5.209 5.21z"></path><path fill="#CC9200" d="M6.422 19.303c1.325-.89 3.221-.949 4.84.671l15.95 15.949 1.041-1.042L11.96 18.625c-2.212-2.368-4.371-1.058-5.538.678zm1.043 11.462c1.323-.89 3.218-.95 4.84.671l10.738 10.739 1.041-1.041-10.968-10.959c-2.127-2.125-4.485-1.147-5.651.59z"></path><path fill="#CC9200" d="M25.126 40.091s-1.137 1.137-1.734 4.516c0 0-.033-3.442-2.464-5.871 3.062 2.492 4.198 1.355 4.198 1.355zm4.58-5.842s-1.988 1.424-2.842 3.411c0 0 .568-2.272-1.419-4.832 2.555 1.99 4.261 1.421 4.261 1.421zm5.319-5.098s-1.917.354-3.385 2.865c0 0 .638-2.203-1.444-4.287 2.082 2.084 4.829 1.422 4.829 1.422z"></path>
+                    </svg>
+                    <h1 class="font-weight-bold mt-4">Nice work</h1>
+                    <p class="mb-4">You just studied {{ cards.length }} terms</p>
+                    <button class="btn transparent-dark text-white"
+                      v-shortkey="['space']" 
+                      @shortkey="cardIdx = 0"
+                      @click="cardIdx = 0">Start over</button>
+                  </div>
+                  <div class="align-self-center" v-else key="2">
                     <transition name="card-slide" mode="out-in">
                       <h1 class="align-self-center text-center mb-0 font-weight-bold" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].term }}</h1>
                       <h1 class="align-self-center mb-0 text-center"  
@@ -25,47 +37,61 @@
                   </div>
                 </transition>
               </div>
+              <div class="card__footer"></div>
             </div>
           </transition>
           <div class="row justify-content-between mb-custom">
             <div class="col-auto align-self-center">
               <a href="javascript:void(0)"
                 class="circle circle-md light-purple mr-1"
+                v-bind:class="{'inactive': start}"
                 @click="changeCard('prev')"
                 v-shortkey="['arrowleft']" @shortkey="changeCard('prev')">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
-                    <path d="M379.644,477.872l-207.299-207.73c-7.798-7.798-7.798-20.486,0.015-28.299L379.643,34.128
-                      c7.803-7.819,7.789-20.482-0.029-28.284c-7.819-7.803-20.482-7.79-28.284,0.029L144.061,213.574
-                      c-23.394,23.394-23.394,61.459-0.015,84.838L351.33,506.127c3.907,3.915,9.031,5.873,14.157,5.873
-                      c5.111,0,10.224-1.948,14.128-5.844C387.433,498.354,387.446,485.691,379.644,477.872z"/>
+                    <path d="M45.833,270.143c-7.797-7.798-7.797-20.487,0.018-28.302L221.145,66.114c7.8-7.82,7.785-20.484-0.035-28.285
+                      c-7.821-7.8-20.485-7.785-28.286,0.035L17.549,213.572c-23.395,23.395-23.395,61.462-0.018,84.839l175.293,175.725
+                      c3.908,3.917,9.033,5.875,14.161,5.875c5.11,0,10.222-1.947,14.125-5.841c7.82-7.801,7.836-20.465,0.035-28.285L45.833,270.143z"
+                      />
+                  </g>
+                  <g>
+                    <path d="M491.999,235.999H128.98c-11.047,0-20.001,8.954-20.001,20.001s8.954,20.001,20.001,20.001h363.018
+                      c11.047,0,20.001-8.954,20.001-20.001S503.045,235.999,491.999,235.999z"/>
                   </g>
                 </svg>
               </a>
               <a href="javascript:void(0)"
                 class="circle circle-md light-purple ml-1"
+                v-bind:class="{'inactive': end}"
                 @click="changeCard('next')"
                 v-shortkey="['arrowright']" @shortkey="changeCard('next')">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
-                    <path d="M367.954,213.588L160.67,5.872c-7.804-7.819-20.467-7.831-28.284-0.029c-7.819,7.802-7.832,20.465-0.03,28.284
-                      l207.299,207.731c7.798,7.798,7.798,20.486-0.015,28.299L132.356,477.873c-7.802,7.819-7.789,20.482,0.03,28.284
-                      c3.903,3.896,9.016,5.843,14.127,5.843c5.125,0,10.25-1.958,14.157-5.873l207.269-207.701
-                      C391.333,275.032,391.333,236.967,367.954,213.588z"/>
+                    <path d="M494.469,213.589L319.176,37.864c-7.802-7.821-20.465-7.835-28.286-0.035c-7.82,7.801-7.836,20.465-0.035,28.285
+                      l175.311,175.744c7.797,7.798,7.797,20.487-0.018,28.302L290.855,445.886c-7.8,7.82-7.785,20.484,0.035,28.285
+                      c3.904,3.894,9.016,5.84,14.126,5.84c5.126,0,10.253-1.959,14.161-5.876l175.275-175.707
+                      C517.846,275.033,517.846,236.966,494.469,213.589z"/>
+                  </g>
+                  <g>
+                    <path d="M383.019,235.999H20.001C8.954,235.999,0,244.954,0,256s8.954,20.001,20.001,20.001h363.018
+                      c11.047,0,20.001-8.954,20.001-20.001S394.066,235.999,383.019,235.999z"/>
                   </g>
                 </svg>
               </a>
             </div>
             <div class="col-auto align-self-center">
-                <svg width="52" viewBox="0 0 72 72">
+                <svg width="75" viewBox="0 0 72 72">
                   <g>
-                    <use class="progress__value" stroke="#AEAFE8" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" xlink:href="#circle">
-                      <circle id="circle" cx="36" cy="36" r="32" fill="#AEAFE8"></circle>
+                    <use class="progress__value" stroke="#8158fc" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" xlink:href="#circle">
+                      <circle id="circle" cx="36" cy="36" r="32" fill="#8158fc"></circle>
                     </use>
                     <use class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" xlink:href="#circle">
                       <circle id="circle" cx="36" cy="36" r="32" fill="none"></circle>
                     </use>
-                    <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" >
+                    <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" v-if="end">
+                      end
+                    </text>
+                    <text y="38" x="36" fill="#fff" font-size="20" text-anchor="middle" dominant-baseline="middle" v-else>
                       {{ cardIdx+1 + '/' + cards.length }}
                     </text>
                   </g>
@@ -116,7 +142,7 @@
                   </g>
                 </svg>
               </a>
-              <router-link :to="{ name: 'learn', params: {id: id} }" class="circle circle-md light-purple">
+              <router-link :to="{ name: 'test', params: {id: id} }" class="circle circle-md light-purple">
                 <svg class="icon" viewBox="0 0 512.001 512.001">
                   <g>
                     <path d="M503.186,326.083c-8.965-6.418-21.436-4.354-27.853,4.612l-98.4,137.447c-2.687,3.116-6.055,3.789-7.859,3.909
@@ -167,10 +193,10 @@
               </a>
             </div>
           </div>
-          <!-- Edit Modal -->
-          <Modal v-if="selectedCard == cards[cardIdx].id && toggleUpdateCardModal">
+          <!-- Edit Card Modal -->
+          <Modal v-if="!end && toggleUpdateCardModal && selectedCard == cards[cardIdx].id ">
             <div slot="header">
-              <div class="card__header magenta">
+              <div class="card__header purple">
                 <div class="row justify_content-between">
                   <div class="col align-self-center">
                     <h5 class="mb-0 text-white font-weight-bold">Edit Card</h5>
@@ -191,13 +217,14 @@
             </div>
             <div slot="footer">
               <div class="card__footer">
-                <form v-on:keydown.enter.shift="updateCard()">
+                <form v-on:submit.prevent="updateCard()">
                   <div class="form-row">
                     <div class="form-group col-12">
                       <input type="text"
                         v-model="cards[cardIdx].term"
                         class="form-control" id="selectedCardTerm"
                         :disabled="updatingCard"
+                        v-on:keydown.enter.shift="updateCard()"
                         autocomplete="off" placeholder="Term">
                     </div>
                     <div class="form-group col-12">
@@ -205,10 +232,11 @@
                         v-model="cards[cardIdx].definition"
                         class="form-control" rows="4" 
                         :disabled="updatingCard"
+                        v-on:keydown.enter.shift="updateCard()"
                         placeholder="Enter Definition"></textarea>
                     </div>
                     <div class="col-12 mt-2">
-                      <button type="submit" class="btn magenta text-white"
+                      <button type="submit" class="btn purple text-white"
                         :disabled="updateCardValidator || updatingCard">
                         {{ updatingCard ? 'Updating' : 'Update' }}
                       </button>
@@ -218,8 +246,8 @@
               </div>
             </div>
           </Modal>
-          <!-- Delete Modal -->
-          <Modal width="550px" v-if="selectedCard == cards[cardIdx].id && toggleDeleteCardModal">
+          <!-- Delete Card Modal -->
+          <Modal width="550px" v-if="!end && toggleDeleteCardModal && selectedCard == cards[cardIdx].id">
             <div slot="body">
               <div class="default-card">
                 <h4 class="font-weight-bold mb-3">{{ cards[cardIdx].term }}</h4>
@@ -240,13 +268,14 @@
           </Modal>
         </div>
         <div class="default-card fade-up">
-          <form v-on:keydown.enter.shift="createCard()">
+          <form v-on:submit.prevent="createCard()">
             <div class="form-row">
               <div class="form-group col-12">
                 <input id="cardTerm" v-model="cardTerm" 
                   class="form-control" ref="cardTerm"
                   autocomplete="off"
                   :disabled="creatingCard"
+                  v-on:keydown.enter.shift="createCard()"
                   placeholder="Enter term">
               </div>
               <div class="form-group col-12">
@@ -254,6 +283,7 @@
                   class="form-control"
                   autocomplete="off" rows="4"
                   :disabled="creatingCard"
+                  v-on:keydown.enter.shift="createCard()"
                   placeholder="Enter Definition"></textarea>
               </div>
               <div class="col-12 mt-2">
@@ -317,11 +347,12 @@ export default {
         && this.cards[this.cardIdx].definition.length < 250) ? false : true
     },
     cardProgress () {
+      if (this.end) return 201.06192982974676
       const progressPercent = (this.cardIdx+1)/this.cards.length
       return 201.06192982974676 * (1 - progressPercent)
     },
     start () {
-      return (this.cardIdx == -1) ? true : false
+      return (this.cardIdx == 0) ? true : false
     },
     end () {
       return (this.cardIdx == this.cards.length) ? true : false
@@ -342,10 +373,7 @@ export default {
       }
     },
     end: function (val) {
-      if (val) this.cardIdx = 0
-    },
-    start: function (val) {
-      if (val) this.cardIdx = this.cards.length - 1
+      if (val) this.playCards = false
     }
   },
   methods: {
@@ -353,7 +381,7 @@ export default {
       return cardDefinition.replace(
         /\*([^*]+)\*/g, "<b>$1</b>").replace(
         /@([^@]+)@/g, "<em>$1</em>").replace(
-        /#([^#]+)#/g, "<u>$1</u>").replace(
+        /#([^#]+)#/g, "<span style='font-size:50%;'>$1</span>").replace(
         /\^([^^]+)\^/g, "<sup>$1</sup>").replace(
         /_([^_]+)_/g, "<sub>$1</sub>")
     },
@@ -429,13 +457,14 @@ export default {
         this.$set(this.cards, i, this.cards[randomIndex])
         this.$set(this.cards, randomIndex, temp)
       }
+      this.cardIdx = 0
     },
     changeCard (dir) {
       this.flipTermDefinition = !this.answerWithTD
-      if (dir == 'next') {
+      if (dir == 'next' && !this.end) {
         this.cardIdx = this.cardIdx + 1
       }  
-      if (dir == 'prev') {
+      if (dir == 'prev' && !this.start) {
         this.cardIdx = this.cardIdx - 1
       }
     }

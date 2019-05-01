@@ -1,5 +1,5 @@
 <template>
-  <div class="purple fixed-top">
+  <div class="magenta fixed-top">
     <div class="row justify-content-between bootstrap-nav">
       <div class="col-auto align-self-center px-0">
         <h4 class="mb-0 font-weight-bold">
@@ -9,7 +9,7 @@
         <span v-if="isAuthenticated">
           <router-link exact 
             :to="{ name: 'user', params: {id: userId} }"
-            class="mr-2 font-weight-bold">my Nutshells</router-link>
+            class="mr-2 font-weight-bold">my Study Sets</router-link>
           <a href="javascript:void(0)" @click="logout" class="ml-2 font-weight-bold">logout</a>
         </span>
         <span v-else>

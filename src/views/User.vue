@@ -19,7 +19,7 @@
               placeholder="New Study Set; Subject, chapter, unit">
           </div>
           <div class="col-12 mt-2">
-            <button type="submit" class="btn magenta text-white" :disabled="newStudySetValidator || creatingStudySet">
+            <button type="submit" class="btn purple text-white" :disabled="newStudySetValidator || creatingStudySet">
               {{ creatingStudySet ? 'Creating' : 'Create' }}
             </button>
           </div>
@@ -35,17 +35,6 @@
       <div class="default-card" v-for="(studyset, idx) in studysets"   
         v-bind:key="idx">
         <div class="row justify-content-between">
-          <!-- <div class="col-auto align-self-center">
-            <svg width="52" viewBox="0 0 72 72">
-              <g>
-                <circle class="progress__value" stroke="#AEAFE8" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" cx="36" cy="36" r="32" fill="#AEAFE8"></circle>
-                <circle class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="learnedProgress" cx="36" cy="36" r="32" fill="none"></circle>
-                <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" >
-                  {{ 16 + '/' + 55 }}
-                </text>
-              </g>
-            </svg>
-          </div> -->
           <div class="col align-self-center">
             <router-link :to="{ name: 'cards', params: {id: studyset.id} }">
               <h4 class="font-weight-bold">{{ studyset.title }}</h4>
@@ -54,12 +43,12 @@
           </div>
           <div class="col-auto align-self-center">
             <a href="javascript:void(0)" 
-              class="circle circle-md magenta mr-1 text-white"
+              class="circle circle-md purple mr-1 text-white"
               @click="updateStudySetModal(studyset.id)">edit</a>
             <!-- Edit Modal -->
             <Modal v-if="selectedStudySet == studyset.id && toggleUpdateStudySetModal">
               <div slot="header">
-                <div class="card__header magenta">
+                <div class="card__header purple">
                   <div class="row justify_content-between">
                     <div class="col align-self-center">
                       <h5 class="mb-0 text-white font-weight-bold">Edit Study Set</h5>
@@ -90,7 +79,7 @@
                           autocomplete="off" placeholder="Study Set Title">
                       </div>
                       <div class="col-12 mt-2">
-                        <button type="submit" class="btn magenta text-white"
+                        <button type="submit" class="btn purple text-white"
                           :disabled="updateStudySetValidator(idx) || updatingStudySet">
                           {{ updatingStudySet ? 'Updating' : 'Update' }}
                         </button>
@@ -101,7 +90,7 @@
               </div>
             </Modal>
             <a href="javascript:void(0)" 
-              class="circle circle-md magenta ml-1 text-white"
+              class="circle circle-md purple ml-1 text-white"
               @click="deleteStudySetConfirmModal(studyset.id)">del</a>
             <!-- Delete Modal -->
             <Modal width="550px" v-if="selectedStudySet == studyset.id && toggleDeleteStudySetModal">
@@ -156,10 +145,6 @@ export default {
     }
   },
   computed: {
-    // learnedProgress () {
-    //   const progressPercent = 16/55
-    //   return 201.06192982974676 * (1 - progressPercent)
-    // },
     newStudySetValidator () {
       return (this.studySetTitle) ? false : true
     },
