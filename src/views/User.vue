@@ -7,7 +7,8 @@
         {{ studysets.length ? studysets.length + ' studyset' : 'No studysets yet' }}
       </p>
     </div>
-    <div class="default-card">
+    <span class="verline"></span>
+    <div class="default-card fade-up">
       <form v-on:submit.prevent="createStudySet()">
         <div class="form-row">
           <div class="form-group col-12">
@@ -18,14 +19,15 @@
               :disabled="creatingStudySet" 
               placeholder="New Study Set; Subject, chapter, unit">
           </div>
-          <div class="col-12 mt-2">
-            <button type="submit" class="btn purple text-white" :disabled="newStudySetValidator || creatingStudySet">
+          <div class="col-12">
+            <button type="submit" class="btn magenta text-white" :disabled="newStudySetValidator || creatingStudySet">
               {{ creatingStudySet ? 'Creating' : 'Create' }}
             </button>
           </div>
         </div>
       </form>
     </div>
+    <span class="verline"></span>
     <Loader v-if="listStudySetsLoader" />
     <div class="fade-up" v-else>
       <div class="text-center" v-if="!studysets.length">
@@ -36,7 +38,7 @@
         v-bind:key="idx">
         <div class="row justify-content-between">
           <div class="col align-self-center">
-            <router-link :to="{ name: 'cards', params: {id: studyset.id} }">
+            <router-link :to="{ name: 'flashcards', params: {id: studyset.id} }">
               <h4 class="font-weight-bold">{{ studyset.title }}</h4>
               <p class="mb-0 text-muted">55 cards</p>
             </router-link>
@@ -78,7 +80,7 @@
                           :disabled="updatingStudySet"
                           autocomplete="off" placeholder="Study Set Title">
                       </div>
-                      <div class="col-12 mt-2">
+                      <div class="col-12">
                         <button type="submit" class="btn purple text-white"
                           :disabled="updateStudySetValidator(idx) || updatingStudySet">
                           {{ updatingStudySet ? 'Updating' : 'Update' }}

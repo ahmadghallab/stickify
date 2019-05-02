@@ -27,7 +27,7 @@
                       :disabled="loggingIn"
                       id="loginPassword">
                   </div>
-                  <div class="form-group col-12 mt-2">
+                  <div class="form-group col-12">
                     <button type="submit" class="btn magenta text-white" :disabled="loginValidator || loggingIn">{{ loggingIn ? 'Logging' : 'Login' }}</button>
                   </div>
                   <div class="col-12">
@@ -81,7 +81,7 @@
                       :disabled="creatingUser"
                       id="newUserPasswordConfirm">
                   </div>
-                  <div class="form-group col-12 mt-2">
+                  <div class="form-group col-12">
                     <button type="submit" class="btn magenta text-white" :disabled="createUserValidator || creatingUser" @click="createUser()">{{ creatingUser ? 'Creating' : 'Create' }}</button>
                   </div>
                   <div class="col-12">
@@ -167,12 +167,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.card-slide-enter-active, .card-slide-leave-active {
-  transition: all .3s ease;
-}
-.card-slide-enter, .card-slide-leave-to {
-  transform: translateX(10px);
-  opacity: 0;
-}
-</style>

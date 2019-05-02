@@ -15,7 +15,7 @@
             <div class="col-auto align-self-center">
               <svg width="100" viewBox="0 0 72 72">
                 <g>
-                  <circle class="progress__value" stroke="#8158fc" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" cx="36" cy="36" r="32" fill="#8158fc"></circle>
+                  <circle class="progress__value" stroke="none" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" cx="36" cy="36" r="32" fill="#8158fc"></circle>
                   <circle class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" cx="36" cy="36" r="32" fill="none"></circle>
                   <text y="38" x="36" fill="#fff" font-size="20" text-anchor="middle" dominant-baseline="middle" v-if="end">
                     end
@@ -234,12 +234,3 @@ export default {
   }
 }
 </script>
-<style scoped>
-.card-slide-enter-active, .card-slide-leave-active {
-  transition: all .3s ease;
-}
-.card-slide-enter, .card-slide-leave-to {
-  transform: translateX(10px);
-  opacity: 0;
-}
-</style>
