@@ -7,29 +7,28 @@
         {{ studysets.length ? studysets.length + ' studyset' : 'No studysets yet' }}
       </p>
     </div>
-    <span class="verline"></span>
-    <div class="default-card fade-up">
-      <form v-on:submit.prevent="createStudySet()">
-        <div class="form-row">
-          <div class="form-group col-12">
-            <input id="setTitle" 
-              v-model="studySetTitle"
-              class="form-control"
-              autocomplete="off"
-              :disabled="creatingStudySet" 
-              placeholder="New Study Set; Subject, chapter, unit">
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn magenta text-white" :disabled="newStudySetValidator || creatingStudySet">
-              {{ creatingStudySet ? 'Creating' : 'Create' }}
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-    <span class="verline"></span>
     <Loader v-if="listStudySetsLoader" />
     <div class="fade-up" v-else>
+      <div class="default-card" v-if="authorized">
+        <form v-on:submit.prevent="createStudySet()">
+          <div class="form-row">
+            <div class="form-group col-12">
+              <input id="setTitle" 
+                v-model="studySetTitle"
+                class="form-control"
+                autocomplete="off"
+                :disabled="creatingStudySet" 
+                placeholder="New Study Set; Subject, chapter, unit">
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn magenta text-white" :disabled="newStudySetValidator || creatingStudySet">
+                {{ creatingStudySet ? 'Creating' : 'Create' }}
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <span class="verline"></span>
       <div class="text-center" v-if="!studysets.length">
         <h6 class="mb-2">No studysets yet</h6>
         <p class="text-muted">use the form above to create a new studyset.</p>
@@ -43,7 +42,7 @@
               <p class="mb-0 text-muted">55 cards</p>
             </router-link>
           </div>
-          <div class="col-auto align-self-center">
+          <div class="col-auto align-self-center" v-if="authorized">
             <a href="javascript:void(0)" 
               class="circle circle-md purple mr-1 text-white"
               @click="updateStudySetModal(studyset.id)">edit</a>
@@ -124,6 +123,7 @@
 import appService from '../app.service.js'
 import Loader from '../components/Loader.vue'
 import Modal from '../components/Modal.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -134,6 +134,7 @@ export default {
     return {
       id: this.$route.params.id,
       username: null,
+      currentUserId: null,
       studySetTitle: null,
       creatingStudySet: false,
       updatingStudySet: false,
@@ -147,6 +148,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userId']),
+    authorized () {
+      return (this.userId == this.currentUserId) ? true : false
+    },
     newStudySetValidator () {
       return (this.studySetTitle) ? false : true
     },
@@ -175,6 +180,7 @@ export default {
     retrieveUser () {
       appService.retrieveUser(this.id).then(data => {
         this.username = data.username
+        this.currentUserId = data.id
         this.retrieveUserLoader = false
       })
     },

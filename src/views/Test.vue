@@ -15,12 +15,12 @@
             <div class="col-auto align-self-center">
               <svg width="100" viewBox="0 0 72 72">
                 <g>
-                  <circle class="progress__value" stroke="none" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" cx="36" cy="36" r="32" fill="#8158fc"></circle>
+                  <circle transform="rotate(-90 36 36)" cx="36" cy="36" r="32" fill="#8158fc"></circle>
                   <circle class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" cx="36" cy="36" r="32" fill="none"></circle>
-                  <text y="38" x="36" fill="#fff" font-size="20" text-anchor="middle" dominant-baseline="middle" v-if="end">
+                  <text y="38" x="36" fill="#fff" font-size="16" text-anchor="middle" dominant-baseline="middle" v-if="end">
                     end
                   </text>
-                  <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" v-else>
+                  <text y="38" x="36" fill="#fff" font-size="16" text-anchor="middle" dominant-baseline="middle" v-else>
                     {{ cardIdx+1 + '/' + cards.length }}
                   </text>
                 </g>
@@ -91,9 +91,11 @@
                   @click="next">Continue</button>
               </div>
               <div class="card__footer text-center">
-                <h1 v-html="formatDefinition(cards[cardIdx].definition)"></h1>
+                <div class="white-space">
+                  <h2 v-html="formatDefinition(cards[cardIdx].definition)"></h2>
+                </div>
                 <p class="text-muted my-4 font-weight-bold">goes with</p>
-                <h1 class="font-weight-bold">{{ cards[cardIdx].term }}</h1>
+                <h2 class="font-weight-bold">{{ cards[cardIdx].term }}</h2>
               </div>
             </div>
             <div key="3" v-else>
@@ -102,6 +104,7 @@
                   v-html="formatDefinition(cards[cardIdx].definition)">
                 </h1>
               </div>
+              <span class="verline"></span>
               <div class="default-card answer-list"
                 v-for="(answer, index) in answers" v-bind:key="index"
                 v-shortkey="[abc[index]]" 

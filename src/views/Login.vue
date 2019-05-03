@@ -137,8 +137,8 @@ export default {
         password: this.loginPassword
       })
       .then(() => {
-        const magentairect = `user/${this.userId}`
-        this.$router.push(magentairect)
+        const redirect = `user/${this.userId}`
+        this.$router.push(redirect)
       })
       .catch(() => {
         this.userNotLoggedIn = true

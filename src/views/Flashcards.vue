@@ -11,47 +11,25 @@
       <Loader v-if="listCardsLoader" />
       <div class="fade-up" v-else>
         <div v-if="cards.length">
-          <div class="row justify-content-between mb-custom">
-            <div class="col-auto align-self-center">
-              <a href="javascript:void(0)" 
-                class="circle circle-md light-purple mr-2 text-white"
-                v-bind:class="{'purple': answerWithTD}"
-                @click="answerWith()">trm</a>
-              <a href="javascript:void(0)" 
-                class="circle circle-md light-purple text-white"
-                v-bind:class="{'purple': !answerWithTD}"
-                @click="answerWith()">defn</a>
-            </div>
+          <div class="row justify-content-center mb-custom">
             <div class="col-auto align-self-center">
               <svg width="100" viewBox="0 0 72 72">
                 <g>
-                  <use class="progress__value" stroke="none" stroke-width="5" transform="rotate(-90 36 36)" stroke-linecap="round" stroke-dashoffset="0" stroke-dasharray="201.06192982974676" xlink:href="#circle">
-                    <circle id="circle" cx="36" cy="36" r="32" fill="#8158fc"></circle>
-                  </use>
-                  <use class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" xlink:href="#circle">
-                    <circle id="circle" cx="36" cy="36" r="32" fill="none"></circle>
-                  </use>
-                  <text y="38" x="36" fill="#fff" font-size="18" text-anchor="middle" dominant-baseline="middle" v-if="end">
+                  <circle stroke="none" transform="rotate(-90 36 36)" cx="36" cy="36" r="32" fill="#8158fc"></circle>
+                  <circle class="progress__value" stroke="#fff" stroke-width="5" stroke-linecap="round" transform="rotate(-90 36 36)" stroke-dasharray="201.06192982974676" v-bind:stroke-dashoffset="cardProgress" cx="36" cy="36" r="32" fill="none"></circle>
+                  <text y="38" x="36" fill="#fff" font-size="16" text-anchor="middle" dominant-baseline="middle" v-if="end">
                     end
                   </text>
-                  <text y="38" x="36" fill="#fff" font-size="20" text-anchor="middle" dominant-baseline="middle" v-else>
+                  <text y="38" x="36" fill="#fff" font-size="16" text-anchor="middle" dominant-baseline="middle" v-else>
                     {{ cardIdx+1 + '/' + cards.length }}
                   </text>
                 </g>
               </svg>
             </div>
-            <div class="col-auto align-self-center">
-              <a href="javascript:void(0)"
-                @click="updateCardModal()" 
-                class="circle circle-md purple text-white mr-1">edit</a>
-              <a href="javascript:void(0)"
-                @click="deleteCardConfirmModal()" 
-                class="circle circle-md text-white purple ml-1">del</a>
-            </div>
           </div>
           <transition name="card-slide" mode="out-in">
             <div :key="cardIdx">
-              <div class="default-card flashcard white-space d-flex justify-content-center">
+              <div class="card__header purple text-white flashcard white-space d-flex justify-content-center">
                 <transition name="card-slide" mode="out-in">
                   <div class="align-self-center text-center" v-if="end" key="1">
                     <svg width="64" height="64">
@@ -59,7 +37,7 @@
                     </svg>
                     <h1 class="font-weight-bold mt-4">Nice work</h1>
                     <p class="mb-4">You just studied {{ cards.length }} terms</p>
-                    <button class="btn purple text-white"
+                    <button class="btn transparent-dark text-white"
                       v-shortkey="['space']" 
                       @shortkey="cardIdx = 0"
                       @click="cardIdx = 0">Start over</button>
@@ -73,6 +51,28 @@
                     </transition>
                   </div>
                 </transition>
+              </div>
+              <div class="card__footer">
+                <div class="row justify-content-between">
+                  <div class="col-auto align-self-center">
+                    <a href="javascript:void(0)" 
+                      class="circle circle-md light-purple mr-2 text-white"
+                      v-bind:class="{'purple': answerWithTD}"
+                      @click="answerWith()">trm</a>
+                    <a href="javascript:void(0)" 
+                      class="circle circle-md light-purple text-white"
+                      v-bind:class="{'purple': !answerWithTD}"
+                      @click="answerWith()">defn</a>
+                  </div>
+                  <div class="col-auto align-self-center" v-if="authorized">
+                    <a href="javascript:void(0)"
+                      @click="updateCardModal()" 
+                      class="circle circle-md magenta text-white mr-1">edit</a>
+                    <a href="javascript:void(0)"
+                      @click="deleteCardConfirmModal()" 
+                      class="circle circle-md text-white magenta ml-1">del</a>
+                  </div>
+                </div>
               </div>
             </div>
           </transition>
@@ -124,53 +124,10 @@
                   <path d="m63.613281 190.464844c-11.371093-11.371094-17.613281-26.4375-17.613281-42.464844s6.242188-31.09375 17.574219-42.425781l100.324219-99.757813c7.832031-7.785156 20.496093-7.75 28.285156.082032 7.789062 7.832031 7.75 20.496093-.082032 28.28125l-100.285156 99.71875c-3.734375 3.738281-5.816406 8.757812-5.816406 14.101562 0 5.339844 2.082031 10.363281 5.859375 14.140625l100.242187 99.675781c7.832032 7.789063 7.871094 20.453125.082032 28.285156-3.910156 3.929688-9.046875 5.898438-14.183594 5.898438-5.101562 0-10.199219-1.9375-14.101562-5.816406zm428.386719-62.464844h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20s-8.953125-20-20-20zm-143.898438 93.816406c-7.832031-7.785156-20.496093-7.75-28.285156.082032-7.789062 7.832031-7.75 20.496093.082032 28.28125l100.242187 99.679687c3.777344 3.773437 5.859375 8.796875 5.859375 14.140625 0 5.339844-2.082031 10.363281-5.816406 14.101562l-100.285156 99.714844c-7.832032 7.789063-7.871094 20.453125-.082032 28.285156 3.910156 3.929688 9.046875 5.898438 14.183594 5.898438 5.097656 0 10.199219-1.9375 14.101562-5.816406l100.324219-99.757813c11.332031-11.332031 17.574219-26.398437 17.574219-42.425781s-6.242188-31.09375-17.613281-42.46875zm18.898438 142.183594c0-11.046875-8.953125-20-20-20h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20zm0 0"/>
                 </svg>
               </a>
-              <router-link :to="{ name: 'test', params: {id: id} }" class="circle circle-md purple align-middle ml-1">
-                <svg class="icon" viewBox="0 0 512.001 512.001">
-                  <g>
-                    <path d="M503.186,326.083c-8.965-6.418-21.436-4.354-27.853,4.612l-98.4,137.447c-2.687,3.116-6.055,3.789-7.859,3.909
-                      c-1.856,0.123-5.412-0.112-8.549-3.051l-63.595-62.061c-7.89-7.7-20.53-7.546-28.23,0.345c-7.7,7.891-7.545,20.529,0.345,28.23
-                      l63.704,62.167c0.059,0.057,0.119,0.115,0.179,0.172c9.551,9.092,22.299,14.149,35.415,14.149c1.127,0,2.259-0.037,3.389-0.113
-                      c14.288-0.952,27.626-7.9,36.596-19.063c0.232-0.289,0.455-0.583,0.671-0.884l98.8-138.006
-                      C514.216,344.971,512.152,332.501,503.186,326.083z"/>
-                    <path d="M250.716,271.399c1.754,0.068,3.514,0.102,5.284,0.102c1.773,0,3.537-0.034,5.293-0.102
-                      c51.318,1.233,100.594,20.362,139.276,54.179c8.302,7.257,20.913,6.41,28.169-1.891c7.257-8.301,6.41-20.912-1.891-28.169
-                      c-26.353-23.039-56.863-40.309-89.595-51.086c33.064-24.782,54.496-64.277,54.496-108.683C391.749,60.897,330.853,0,255.999,0
-                      s-135.75,60.897-135.75,135.75c0,44.423,21.448,83.93,54.534,108.711c-30.313,9.98-58.756,25.508-83.65,45.983
-                      c-45.648,37.548-77.386,89.92-89.367,147.471c-3.755,18.033,0.744,36.555,12.34,50.815c11.54,14.191,28.651,22.329,46.947,22.329
-                      h175.983c11.026,0,19.963-8.938,19.963-19.963s-8.939-19.963-19.963-19.963H61.052c-8.522,0-13.664-4.757-15.97-7.592
-                      c-3.982-4.896-5.523-11.269-4.228-17.487C61.572,346.541,149.35,273.849,250.716,271.399z M160.177,135.751
-                      c0-52.838,42.986-95.824,95.824-95.824s95.824,42.986,95.824,95.824c0,51.215-40.386,93.173-90.983,95.703
-                      c-1.612-0.03-3.225-0.045-4.84-0.045c-1.609,0-3.217,0.016-4.823,0.046C200.572,228.933,160.177,186.971,160.177,135.751z"/>
-                  </g>
-                </svg>
-              </router-link>
-            </div>
-            <div class="col-auto align-self-center">
-              <a href="javascript:void(0)"
-                @click="startShow()"
-                v-shortkey="['p']" @shortkey="startShow()" 
-                class="circle circle-md mr-2"
-                v-bind:class="{
-                  'purple': !playCards, 
-                  'magenta': playCards
-                }">
-                <svg class="icon" viewBox="0 0 511.999 511.999"   
-                  style="enable-background:new 0 0 511.999 511.999;">
-                  <g>
-                    <path d="M443.86,196.919L141.46,10.514C119.582-2.955,93.131-3.515,70.702,9.016c-22.429,12.529-35.819,35.35-35.819,61.041
-                      v371.112c0,38.846,31.3,70.619,69.77,70.829c0.105,0,0.21,0.001,0.313,0.001c12.022-0.001,24.55-3.769,36.251-10.909
-                      c9.413-5.743,12.388-18.029,6.645-27.441c-5.743-9.414-18.031-12.388-27.441-6.645c-5.473,3.338-10.818,5.065-15.553,5.064
-                      c-14.515-0.079-30.056-12.513-30.056-30.898V70.058c0-11.021,5.744-20.808,15.364-26.183c9.621-5.375,20.966-5.135,30.339,0.636
-                      l302.401,186.405c9.089,5.596,14.29,14.927,14.268,25.601c-0.022,10.673-5.261,19.983-14.4,25.56L204.147,415.945
-                      c-9.404,5.758-12.36,18.049-6.602,27.452c5.757,9.404,18.048,12.36,27.452,6.602l218.611-133.852
-                      c20.931-12.769,33.457-35.029,33.507-59.55C477.165,232.079,464.729,209.767,443.86,196.919z"/>
-                  </g>
-                </svg>
-              </a>
               <a href="javascript:void(0)"
                 @click="shuffle()"
                 v-shortkey="['h']" @shortkey="shuffle()" 
-                class="circle circle-md purple mr-2">
+                class="circle circle-md purple ml-1 align-middle">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M494.246,359.453L432.084,297.8c-7.843-7.778-20.506-7.727-28.284,0.116c-7.778,7.843-7.726,20.506,0.116,28.284
@@ -190,6 +147,40 @@
                   </g>
                 </svg>
               </a>
+            </div>
+            <div class="col-auto align-self-center">
+              <a href="javascript:void(0)"
+                @click="startShow()"
+                v-shortkey="['p']" @shortkey="startShow()" 
+                class="circle circle-md mr-1 align-middle"
+                v-bind:class="{
+                  'purple': !playCards, 
+                  'magenta': playCards
+                }">
+                <svg class="icon" viewBox="0 0 511.999 511.999"   
+                  style="enable-background:new 0 0 511.999 511.999;">
+                  <g>
+                    <path d="M443.86,196.919L141.46,10.514C119.582-2.955,93.131-3.515,70.702,9.016c-22.429,12.529-35.819,35.35-35.819,61.041
+                      v371.112c0,38.846,31.3,70.619,69.77,70.829c0.105,0,0.21,0.001,0.313,0.001c12.022-0.001,24.55-3.769,36.251-10.909
+                      c9.413-5.743,12.388-18.029,6.645-27.441c-5.743-9.414-18.031-12.388-27.441-6.645c-5.473,3.338-10.818,5.065-15.553,5.064
+                      c-14.515-0.079-30.056-12.513-30.056-30.898V70.058c0-11.021,5.744-20.808,15.364-26.183c9.621-5.375,20.966-5.135,30.339,0.636
+                      l302.401,186.405c9.089,5.596,14.29,14.927,14.268,25.601c-0.022,10.673-5.261,19.983-14.4,25.56L204.147,415.945
+                      c-9.404,5.758-12.36,18.049-6.602,27.452c5.757,9.404,18.048,12.36,27.452,6.602l218.611-133.852
+                      c20.931-12.769,33.457-35.029,33.507-59.55C477.165,232.079,464.729,209.767,443.86,196.919z"/>
+                  </g>
+                </svg>
+              </a>
+              <router-link :to="{ name: 'test', params: {id: id} }" class="circle circle-md purple align-middle ml-1">
+                <svg class="icon" viewBox="0 0 512 512">
+                  <g>
+                    <path d="M400.268,175.599c-1.399-3.004-4.412-4.932-7.731-4.932h-101.12l99.797-157.568c1.664-2.628,1.766-5.956,0.265-8.678
+                      C389.977,1.69,387.109,0,384.003,0H247.47c-3.234,0-6.187,1.826-7.637,4.719l-128,256c-1.323,2.637-1.178,5.777,0.375,8.294
+                      c1.562,2.517,4.301,4.053,7.262,4.053h87.748l-95.616,227.089c-1.63,3.883-0.179,8.388,3.413,10.59
+                      c1.382,0.845,2.918,1.254,4.446,1.254c2.449,0,4.864-1.05,6.537-3.029l273.067-324.267
+                      C401.206,182.161,401.667,178.611,400.268,175.599z"/>
+                  </g>
+                </svg>
+              </router-link>
             </div>
           </div>
           <!-- Edit Card Modal -->
@@ -266,35 +257,37 @@
             </div>
           </Modal>
         </div>
-        <span class="verline"></span>
-        <div class="default-card fade-up">
-          <form v-on:submit.prevent="createCard()">
-            <div class="form-row">
-              <div class="form-group col-12">
-                <input id="cardTerm" v-model="cardTerm" 
-                  class="form-control"
-                  autocomplete="off"
-                  :disabled="creatingCard"
-                  v-on:keydown.enter.shift="createCard()"
-                  placeholder="Enter term">
+        <div v-if="authorized">
+          <span class="verline"></span>
+          <div class="default-card">
+            <form v-on:submit.prevent="createCard()">
+              <div class="form-row">
+                <div class="form-group col-12">
+                  <input id="cardTerm" v-model="cardTerm" 
+                    class="form-control"
+                    autocomplete="off"
+                    :disabled="creatingCard"
+                    v-on:keydown.enter.shift="createCard()"
+                    placeholder="Enter term">
+                </div>
+                <div class="form-group col-12">
+                  <textarea id="cardDefinition" v-model="cardDefinition" 
+                    class="form-control"
+                    autocomplete="off" rows="4"
+                    :disabled="creatingCard"
+                    v-on:keydown.enter.shift="createCard()"
+                    placeholder="Enter Definition"></textarea>
+                </div>
+                <div class="col-12">
+                  <button type="submit" 
+                    class="btn magenta text-white"
+                    :disabled="newCardValidator || creatingCard">
+                    {{ creatingCard ? 'Creating' : 'Create' }}
+                  </button>
+                </div>
               </div>
-              <div class="form-group col-12">
-                <textarea id="cardDefinition" v-model="cardDefinition" 
-                  class="form-control"
-                  autocomplete="off" rows="4"
-                  :disabled="creatingCard"
-                  v-on:keydown.enter.shift="createCard()"
-                  placeholder="Enter Definition"></textarea>
-              </div>
-              <div class="col-12">
-                <button type="submit" 
-                  class="btn magenta text-white"
-                  :disabled="newCardValidator || creatingCard">
-                  {{ creatingCard ? 'Creating' : 'Create' }}
-                </button>
-              </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -304,6 +297,7 @@
 import appService from '../app.service.js'
 import Loader from '../components/Loader.vue'
 import Modal from '../components/Modal.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -314,6 +308,7 @@ export default {
     return {
       id: this.$route.params.id,
       studySetTitle: null,
+      studySetUser: null,
       cardTerm: null,
       cardDefinition: null,
       creatingCard: false,
@@ -334,6 +329,10 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['userId']),
+    authorized () {
+      return (this.userId == this.studySetUser) ? true : false
+    },
     newCardValidator () {
       return (this.cardTerm 
         && this.cardDefinition 
@@ -404,6 +403,7 @@ export default {
     retrieveStudySet () {
       appService.retrieveStudySet(this.id).then(data => {
         this.studySetTitle = data.title
+        this.studySetUser = data.user
         this.retrieveStudySetLoader = false
       })
     },
