@@ -29,7 +29,7 @@
           </div>
           <transition name="card-slide" mode="out-in">
             <div :key="cardIdx">
-              <div class="card__header purple text-white flashcard white-space d-flex justify-content-center">
+              <div class="default-card pxy-custom flashcard white-space d-flex justify-content-center">
                 <transition name="card-slide" mode="out-in">
                   <div class="align-self-center text-center" v-if="end" key="1">
                     <svg width="64" height="64">
@@ -37,49 +37,32 @@
                     </svg>
                     <h1 class="font-weight-bold mt-4">Nice work</h1>
                     <p class="mb-4">You just studied {{ cards.length }} terms</p>
-                    <button class="btn transparent-dark text-white"
+                    <button class="btn purple text-white"
                       v-shortkey="['space']" 
                       @shortkey="cardIdx = 0"
                       @click="cardIdx = 0">Start over</button>
                   </div>
                   <div class="align-self-center" v-else key="2">
                     <transition name="card-slide" mode="out-in">
-                      <h1 class="align-self-center text-center mb-0 font-weight-bold" v-if="flipTermDefinition" key="1">{{ cards[cardIdx].term }}</h1>
+                      <h1 class="align-self-center text-center mb-0" 
+                        v-if="flipTermDefinition" 
+                        key="1"
+                        v-html="formatText(cards[cardIdx].term)">
+                      </h1>
                       <h1 class="align-self-center mb-0 text-center"  
                         key="2" 
-                        v-html="formatDefinition(cards[cardIdx].definition)" v-else></h1>
+                        v-html="formatText(cards[cardIdx].definition)" v-else>
+                      </h1>
                     </transition>
                   </div>
                 </transition>
-              </div>
-              <div class="card__footer">
-                <div class="row justify-content-between">
-                  <div class="col-auto align-self-center">
-                    <a href="javascript:void(0)" 
-                      class="circle circle-md light-purple mr-2 text-white"
-                      v-bind:class="{'purple': answerWithTD}"
-                      @click="answerWith()">trm</a>
-                    <a href="javascript:void(0)" 
-                      class="circle circle-md light-purple text-white"
-                      v-bind:class="{'purple': !answerWithTD}"
-                      @click="answerWith()">defn</a>
-                  </div>
-                  <div class="col-auto align-self-center" v-if="authorized">
-                    <a href="javascript:void(0)"
-                      @click="updateCardModal()" 
-                      class="circle circle-md magenta text-white mr-1">edit</a>
-                    <a href="javascript:void(0)"
-                      @click="deleteCardConfirmModal()" 
-                      class="circle circle-md text-white magenta ml-1">del</a>
-                  </div>
-                </div>
               </div>
             </div>
           </transition>
           <div class="row justify-content-between mb-custom">
             <div class="col-auto align-self-center">
               <a href="javascript:void(0)"
-                class="circle circle-md purple mr-1"
+                class="circle circle-md purple mr-1 align-middle"
                 v-bind:class="{'inactive': start}"
                 @click="changeCard('prev')"
                 v-shortkey="['arrowleft']" @shortkey="changeCard('prev')">
@@ -97,7 +80,7 @@
                 </svg>
               </a>
               <a href="javascript:void(0)"
-                class="circle circle-md purple ml-1"
+                class="circle circle-md purple ml-1 align-middle"
                 v-bind:class="{'inactive': end}"
                 @click="changeCard('next')"
                 v-shortkey="['arrowright']" @shortkey="changeCard('next')">
@@ -116,18 +99,41 @@
               </a>
             </div>
             <div class="col-auto align-self-center">
+              <a href="javascript:void(0)"
+                @click="startShow()"
+                v-shortkey="['p']" @shortkey="startShow()" 
+                class="circle circle-md mr-1 align-middle"
+                v-bind:class="{
+                  'light-purple': !playCards, 
+                  'purple': playCards
+                }">
+                <svg class="icon" viewBox="0 0 511.999 511.999"   
+                  style="enable-background:new 0 0 511.999 511.999;">
+                  <g>
+                    <path d="M443.86,196.919L141.46,10.514C119.582-2.955,93.131-3.515,70.702,9.016c-22.429,12.529-35.819,35.35-35.819,61.041
+                      v371.112c0,38.846,31.3,70.619,69.77,70.829c0.105,0,0.21,0.001,0.313,0.001c12.022-0.001,24.55-3.769,36.251-10.909
+                      c9.413-5.743,12.388-18.029,6.645-27.441c-5.743-9.414-18.031-12.388-27.441-6.645c-5.473,3.338-10.818,5.065-15.553,5.064
+                      c-14.515-0.079-30.056-12.513-30.056-30.898V70.058c0-11.021,5.744-20.808,15.364-26.183c9.621-5.375,20.966-5.135,30.339,0.636
+                      l302.401,186.405c9.089,5.596,14.29,14.927,14.268,25.601c-0.022,10.673-5.261,19.983-14.4,25.56L204.147,415.945
+                      c-9.404,5.758-12.36,18.049-6.602,27.452c5.757,9.404,18.048,12.36,27.452,6.602l218.611-133.852
+                      c20.931-12.769,33.457-35.029,33.507-59.55C477.165,232.079,464.729,209.767,443.86,196.919z"/>
+                  </g>
+                </svg>
+              </a>
               <a href="javascript:void(0)" 
-                class="circle circle-md purple align-middle mr-1"
+                class="circle circle-md purple align-middle ml-1"
                 @click="flipCard"
                 v-shortkey="['space']" @shortkey="flipCard">
                 <svg class="icon" viewBox="0 0 512 512">
                   <path d="m63.613281 190.464844c-11.371093-11.371094-17.613281-26.4375-17.613281-42.464844s6.242188-31.09375 17.574219-42.425781l100.324219-99.757813c7.832031-7.785156 20.496093-7.75 28.285156.082032 7.789062 7.832031 7.75 20.496093-.082032 28.28125l-100.285156 99.71875c-3.734375 3.738281-5.816406 8.757812-5.816406 14.101562 0 5.339844 2.082031 10.363281 5.859375 14.140625l100.242187 99.675781c7.832032 7.789063 7.871094 20.453125.082032 28.285156-3.910156 3.929688-9.046875 5.898438-14.183594 5.898438-5.101562 0-10.199219-1.9375-14.101562-5.816406zm428.386719-62.464844h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20s-8.953125-20-20-20zm-143.898438 93.816406c-7.832031-7.785156-20.496093-7.75-28.285156.082032-7.789062 7.832031-7.75 20.496093.082032 28.28125l100.242187 99.679687c3.777344 3.773437 5.859375 8.796875 5.859375 14.140625 0 5.339844-2.082031 10.363281-5.816406 14.101562l-100.285156 99.714844c-7.832032 7.789063-7.871094 20.453125-.082032 28.285156 3.910156 3.929688 9.046875 5.898438 14.183594 5.898438 5.097656 0 10.199219-1.9375 14.101562-5.816406l100.324219-99.757813c11.332031-11.332031 17.574219-26.398437 17.574219-42.425781s-6.242188-31.09375-17.613281-42.46875zm18.898438 142.183594c0-11.046875-8.953125-20-20-20h-327c-11.046875 0-20 8.953125-20 20s8.953125 20 20 20h327c11.046875 0 20-8.953125 20-20zm0 0"/>
                 </svg>
               </a>
+            </div>
+            <div class="col-auto align-self-center">
               <a href="javascript:void(0)"
                 @click="shuffle()"
                 v-shortkey="['h']" @shortkey="shuffle()" 
-                class="circle circle-md purple ml-1 align-middle">
+                class="circle circle-md purple mr-1 align-middle">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
                     <path d="M494.246,359.453L432.084,297.8c-7.843-7.778-20.506-7.727-28.284,0.116c-7.778,7.843-7.726,20.506,0.116,28.284
@@ -147,29 +153,6 @@
                   </g>
                 </svg>
               </a>
-            </div>
-            <div class="col-auto align-self-center">
-              <a href="javascript:void(0)"
-                @click="startShow()"
-                v-shortkey="['p']" @shortkey="startShow()" 
-                class="circle circle-md mr-1 align-middle"
-                v-bind:class="{
-                  'purple': !playCards, 
-                  'magenta': playCards
-                }">
-                <svg class="icon" viewBox="0 0 511.999 511.999"   
-                  style="enable-background:new 0 0 511.999 511.999;">
-                  <g>
-                    <path d="M443.86,196.919L141.46,10.514C119.582-2.955,93.131-3.515,70.702,9.016c-22.429,12.529-35.819,35.35-35.819,61.041
-                      v371.112c0,38.846,31.3,70.619,69.77,70.829c0.105,0,0.21,0.001,0.313,0.001c12.022-0.001,24.55-3.769,36.251-10.909
-                      c9.413-5.743,12.388-18.029,6.645-27.441c-5.743-9.414-18.031-12.388-27.441-6.645c-5.473,3.338-10.818,5.065-15.553,5.064
-                      c-14.515-0.079-30.056-12.513-30.056-30.898V70.058c0-11.021,5.744-20.808,15.364-26.183c9.621-5.375,20.966-5.135,30.339,0.636
-                      l302.401,186.405c9.089,5.596,14.29,14.927,14.268,25.601c-0.022,10.673-5.261,19.983-14.4,25.56L204.147,415.945
-                      c-9.404,5.758-12.36,18.049-6.602,27.452c5.757,9.404,18.048,12.36,27.452,6.602l218.611-133.852
-                      c20.931-12.769,33.457-35.029,33.507-59.55C477.165,232.079,464.729,209.767,443.86,196.919z"/>
-                  </g>
-                </svg>
-              </a>
               <router-link :to="{ name: 'test', params: {id: id} }" class="circle circle-md purple align-middle ml-1">
                 <svg class="icon" viewBox="0 0 512 512">
                   <g>
@@ -181,6 +164,28 @@
                   </g>
                 </svg>
               </router-link>
+            </div>
+          </div>
+          <div class="row justify-content-center mb-custom">
+            <div class="col-auto align-self-center">
+              <small class="mr-2 text-muted font-italic">answer with</small>
+              <a href="javascript:void(0)" 
+                class="circle circle-md light-purple mr-2 text-white"
+                v-bind:class="{'purple': answerWithTD}"
+                @click="answerWith()">trm</a>
+              <a href="javascript:void(0)" 
+                class="circle circle-md light-purple text-white"
+                v-bind:class="{'purple': !answerWithTD}"
+                @click="answerWith()">defn</a>
+            </div>
+            <div class="col-auto align-self-center" v-if="authorized">
+              <a href="javascript:void(0)"
+                @click="updateCardModal()"
+                v-shortkey="['e']" @shortkey="updateCardModal()" 
+                class="circle circle-md purple text-white mr-1">edit</a>
+              <a href="javascript:void(0)"
+                @click="deleteCardConfirmModal()" 
+                class="circle circle-md text-white purple ml-1">del</a>
             </div>
           </div>
           <!-- Edit Card Modal -->
@@ -240,14 +245,14 @@
           <Modal width="550px" v-if="!end && toggleDeleteCardModal && selectedCard == cards[cardIdx].id">
             <div slot="body">
               <div class="default-card">
-                <h4 class="font-weight-bold mb-3">{{ cards[cardIdx].term }}</h4>
+                <h4 class="font-weight-bold mb-3" v-html="formatText(cards[cardIdx].term)"></h4>
                 <p class="text-muted">
                   You are about to delete this card. No one will be able to access this card ever again.
                 </p>
                 <p class="font-weight-bold my-4">Are you absolutely positive? There's no undo.</p>
                 <div class="text-center">
                   <button @click="deleteCard()"
-                    class="btn magenta btn-lg btn-block text-white mb-3" :disabled="deletingCard">
+                    class="btn red btn-lg btn-block text-white mb-3" :disabled="deletingCard">
                     {{ deletingCard ? 'Deleting' : 'Yes, delete' }}
                   </button>
                   <a href="javascript:void(0)" @click="toggleDeleteCardModal = false"
@@ -280,7 +285,7 @@
                 </div>
                 <div class="col-12">
                   <button type="submit" 
-                    class="btn magenta text-white"
+                    class="btn purple text-white"
                     :disabled="newCardValidator || creatingCard">
                     {{ creatingCard ? 'Creating' : 'Create' }}
                   </button>
@@ -376,13 +381,21 @@ export default {
     }
   },
   methods: {
-    formatDefinition (cardDefinition) {
-      return cardDefinition.replace(
+    formatText (cardText) {
+      return cardText.replace(
         /\*([^*]+)\*/g, "<b>$1</b>").replace(
         /@([^@]+)@/g, "<em>$1</em>").replace(
         /#([^#]+)#/g, "<span style='font-size:50%;'>$1</span>").replace(
         /\^([^^]+)\^/g, "<sup>$1</sup>").replace(
-        /_([^_]+)_/g, "<sub>$1</sub>")
+        /_([^_]+)_/g, "<sub>$1</sub>").replace(
+        /y\[+([^\][]+)]+/g, "<span class='yellow-hl'>$1</span>").replace(
+        /k\[+([^\][]+)]+/g, "<span class='pink-hl'>$1</span>").replace(
+        /t\[+([^\][]+)]+/g, "<span class='teal-hl'>$1</span>").replace(
+        /g\[+([^\][]+)]+/g, "<span class='green-hl'>$1</span>").replace(
+        /b\[+([^\][]+)]+/g, "<span class='blue-hl'>$1</span>").replace(
+        /n\[+([^\][]+)]+/g, "<span class='brown-hl'>$1</span>").replace(
+        /p\[+([^\][]+)]+/g, "<span class='purple-hl'>$1</span>").replace(
+        /o\[+([^\][]+)]+/g, "<span class='orange-hl'>$1</span>")
     },
     answerWith() {
       this.answerWithTD = !this.answerWithTD
@@ -421,8 +434,10 @@ export default {
       }).catch()
     },
     updateCardModal() {
-      this.selectedCard = this.cards[this.cardIdx].id
-      this.toggleUpdateCardModal = true
+      if (this.authorized) {
+        this.selectedCard = this.cards[this.cardIdx].id
+        this.toggleUpdateCardModal = true
+      }
     },
     updateCard() {
       this.updatingCard = true
@@ -436,8 +451,10 @@ export default {
       })
     },
     deleteCardConfirmModal() {
-      this.selectedCard = this.cards[this.cardIdx].id
-      this.toggleDeleteCardModal = true
+      if (this.authorized) {
+        this.selectedCard = this.cards[this.cardIdx].id
+        this.toggleDeleteCardModal = true
+      }
     },
     deleteCard() {
       this.deletingCard = true

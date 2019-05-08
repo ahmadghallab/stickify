@@ -21,7 +21,7 @@
                 placeholder="New Study Set; Subject, chapter, unit">
             </div>
             <div class="col-12">
-              <button type="submit" class="btn magenta text-white" :disabled="newStudySetValidator || creatingStudySet">
+              <button type="submit" class="btn purple text-white" :disabled="newStudySetValidator || creatingStudySet">
                 {{ creatingStudySet ? 'Creating' : 'Create' }}
               </button>
             </div>
@@ -104,7 +104,7 @@
                   <p class="font-weight-bold my-4">Are you absolutely positive? There's no undo.</p>
                   <div class="text-center">
                     <button @click="deleteStudySet(idx)"
-                      class="btn magenta btn-lg btn-block text-white mb-3" :disabled="deletingStudySet">
+                      class="btn red btn-lg btn-block text-white mb-3" :disabled="deletingStudySet">
                       {{ deletingStudySet ? 'Deleting' : 'Yes, delete' }}
                     </button>
                     <a href="javascript:void(0)" @click="toggleDeleteStudySetModal = false"

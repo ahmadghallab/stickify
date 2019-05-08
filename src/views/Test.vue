@@ -92,17 +92,18 @@
               </div>
               <div class="card__footer text-center">
                 <div class="white-space">
-                  <h2 v-html="formatDefinition(cards[cardIdx].definition)"></h2>
+                  <h2 v-html="formatText(cards[cardIdx].definition)"></h2>
                 </div>
                 <p class="text-muted my-4 font-weight-bold">goes with</p>
-                <h2 class="font-weight-bold">{{ cards[cardIdx].term }}</h2>
+                <h2 class="font-weight-bold" 
+                  v-html="formatText(cards[cardIdx].term)"></h2>
               </div>
             </div>
             <div key="3" v-else>
               <div class="default-card white-space">
-                <h1 class="mb-0 text-center"  
-                  v-html="formatDefinition(cards[cardIdx].definition)">
-                </h1>
+                <h2 class="mb-0 text-center"  
+                  v-html="formatText(cards[cardIdx].definition)">
+                </h2>
               </div>
               <span class="verline"></span>
               <div class="default-card answer-list"
@@ -112,10 +113,10 @@
                 @click="selectAnswer(answer.id)">
                 <div class="row">
                   <div class="col-auto align-self-center">
-                    <span class="circle circle-md purple text-white">{{ abc[index] }}</span>
+                    <span class="circle circle-md light-purple text-white">{{ abc[index] }}</span>
                   </div>
                   <div class="col align-self-center">
-                    <h2 class="mb-0">{{ answer.term }}</h2>
+                    <h2 class="mb-0" v-html="formatText(answer.term)"></h2>
                   </div>
                 </div>
               </div>
@@ -167,13 +168,21 @@ export default {
     }
   },
   methods: {
-    formatDefinition (cardDefinition) {
-      return cardDefinition.replace(
+    formatText (cardText) {
+      return cardText.replace(
         /\*([^*]+)\*/g, "<b>$1</b>").replace(
         /@([^@]+)@/g, "<em>$1</em>").replace(
         /#([^#]+)#/g, "<span style='font-size:50%;'>$1</span>").replace(
         /\^([^^]+)\^/g, "<sup>$1</sup>").replace(
-        /_([^_]+)_/g, "<sub>$1</sub>")
+        /_([^_]+)_/g, "<sub>$1</sub>").replace(
+        /y\[+([^\][]+)]+/g, "<span class='yellow-hl'>$1</span>").replace(
+        /k\[+([^\][]+)]+/g, "<span class='pink-hl'>$1</span>").replace(
+        /t\[+([^\][]+)]+/g, "<span class='teal-hl'>$1</span>").replace(
+        /g\[+([^\][]+)]+/g, "<span class='green-hl'>$1</span>").replace(
+        /b\[+([^\][]+)]+/g, "<span class='blue-hl'>$1</span>").replace(
+        /n\[+([^\][]+)]+/g, "<span class='brown-hl'>$1</span>").replace(
+        /p\[+([^\][]+)]+/g, "<span class='purple-hl'>$1</span>").replace(
+        /o\[+([^\][]+)]+/g, "<span class='orange-hl'>$1</span>")
     },
     selectAnswer (answerId) {
       this.result = true
