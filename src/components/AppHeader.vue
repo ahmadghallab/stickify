@@ -1,9 +1,12 @@
 <template>
-  <div class="purple top-nav fixed-top">
+  <div class="top-nav bg-white fixed-top">
     <div class="row justify-content-between bootstrap-nav">
       <div class="col-auto align-self-center px-0">
-        <h4 class="mb-0 font-weight-bold">
-          <router-link exact :to="{ name: 'home' }">nutshell</router-link></h4>
+        <h3 class="mb-0 font-weight-bold">
+          <router-link exact :to="{ name: 'home' }" class="brand">
+            Stickify
+          </router-link>
+        </h3>
       </div>
       <div class="col-auto align-self-center px-0">
         <span v-if="isAuthenticated">

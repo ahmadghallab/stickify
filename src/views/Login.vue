@@ -2,10 +2,10 @@
   <div>
     <div class="row justify-content-center">
       <div class="col-md-8 fade-up">
-        <transition name="card-slide" mode="out-in">
+        <transition name="card-slide-right" mode="out-in">
           <div v-if="toggleSigninSignup" key="1">
-            <div class="default-card magenta text-white" v-if="userNotLoggedIn">
-              <h6 class="mb-0 font-weight-bold">Your cmagentaentials are incorrect</h6>
+            <div class="default-card red text-white" v-if="userNotLoggedIn">
+              <h6 class="mb-0 font-weight-bold">Your credentials are incorrect</h6>
             </div>
             <div class="default-card">
               <form v-on:submit.prevent="login()">
@@ -28,7 +28,7 @@
                       id="loginPassword">
                   </div>
                   <div class="form-group col-12">
-                    <button type="submit" class="btn magenta text-white" :disabled="loginValidator || loggingIn">{{ loggingIn ? 'Logging' : 'Login' }}</button>
+                    <button type="submit" class="btn green text-white" :disabled="loginValidator || loggingIn">{{ loggingIn ? 'Logging' : 'Login' }}</button>
                   </div>
                   <div class="col-12">
                     <a href="javascript:void(0)" 
@@ -42,7 +42,7 @@
           </div>
           <div key="2" v-else>
             <div class="default-card">
-              <div class="default-card magenta text-white" v-if="accountNotCreated">
+              <div class="default-card red text-white" v-if="accountNotCreated">
                 <h6 class="mb-0 font-weight-bold">Account not created</h6>
               </div>
               <form v-on:submit.prevent="createUser()">
@@ -82,7 +82,7 @@
                       id="newUserPasswordConfirm">
                   </div>
                   <div class="form-group col-12">
-                    <button type="submit" class="btn magenta text-white" :disabled="createUserValidator || creatingUser" @click="createUser()">{{ creatingUser ? 'Creating' : 'Create' }}</button>
+                    <button type="submit" class="btn green text-white" :disabled="createUserValidator || creatingUser" @click="createUser()">{{ creatingUser ? 'Creating' : 'Create' }}</button>
                   </div>
                   <div class="col-12">
                     <a href="javascript:void(0)" 
@@ -142,6 +142,7 @@ export default {
       })
       .catch(() => {
         this.userNotLoggedIn = true
+        this.loginPassword = null
         this.loggingIn = false
       })
     },
@@ -167,3 +168,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+.card-slide-right-enter-active, .card-slide-right-leave-active {
+  transition: all .3s ease;
+}
+.card-slide-right-enter, .card-slide-right-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>

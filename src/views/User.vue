@@ -2,31 +2,34 @@
   <div>
     <Loader v-if="retrieveUserLoader" />
     <div class="default-card fade-up" v-else>
-      <h4 class="font-weight-bold">{{ username }}</h4>
+      <h2 class="font-weight-bold">{{ username }}</h2>
       <p class="text-muted mb-0">
         {{ studysets.length ? studysets.length + ' studyset' : 'No studysets yet' }}
       </p>
     </div>
     <Loader v-if="listStudySetsLoader" />
     <div class="fade-up" v-else>
-      <div class="default-card" v-if="authorized">
-        <form v-on:submit.prevent="createStudySet()">
-          <div class="form-row">
-            <div class="form-group col-12">
-              <input id="setTitle" 
-                v-model="studySetTitle"
-                class="form-control"
-                autocomplete="off"
-                :disabled="creatingStudySet" 
-                placeholder="New Study Set; Subject, chapter, unit">
+      <div v-if="authorized">
+        <span class="verline"></span>
+        <div class="default-card">
+          <form v-on:submit.prevent="createStudySet()">
+            <div class="form-row">
+              <div class="form-group col-12">
+                <input id="setTitle" 
+                  v-model="studySetTitle"
+                  class="form-control"
+                  autocomplete="off"
+                  :disabled="creatingStudySet" 
+                  placeholder="New Study Set; Subject, chapter, unit">
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn green text-white" :disabled="newStudySetValidator || creatingStudySet">
+                  {{ creatingStudySet ? 'Creating' : 'Create' }}
+                </button>
+              </div>
             </div>
-            <div class="col-12">
-              <button type="submit" class="btn purple text-white" :disabled="newStudySetValidator || creatingStudySet">
-                {{ creatingStudySet ? 'Creating' : 'Create' }}
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
       <span class="verline"></span>
       <div class="text-center" v-if="!studysets.length">
@@ -38,21 +41,21 @@
         <div class="row justify-content-between">
           <div class="col align-self-center">
             <router-link :to="{ name: 'flashcards', params: {id: studyset.id} }">
-              <h4 class="font-weight-bold">{{ studyset.title }}</h4>
-              <p class="mb-0 text-muted">55 cards</p>
+              <h3 class="font-weight-bold">{{ studyset.title }}</h3>
+              <p class="mb-0 text-muted">55 term</p>
             </router-link>
           </div>
           <div class="col-auto align-self-center" v-if="authorized">
             <a href="javascript:void(0)" 
-              class="circle circle-md purple mr-1 text-white"
+              class="circle circle-md coral mr-1 text-white"
               @click="updateStudySetModal(studyset.id)">edit</a>
             <!-- Edit Modal -->
             <Modal v-if="selectedStudySet == studyset.id && toggleUpdateStudySetModal">
               <div slot="header">
-                <div class="card__header purple">
+                <div class="card__header blue">
                   <div class="row justify_content-between">
                     <div class="col align-self-center">
-                      <h5 class="mb-0 text-white font-weight-bold">Edit Study Set</h5>
+                      <h4 class="mb-0 text-white font-weight-bold">Edit Study Set</h4>
                     </div>
                     <div class="col-auto align-self-center">
                       <a href="javascript:void(0)" 
@@ -79,8 +82,8 @@
                           :disabled="updatingStudySet"
                           autocomplete="off" placeholder="Study Set Title">
                       </div>
-                      <div class="col-12">
-                        <button type="submit" class="btn purple text-white"
+                      <div class="col-12 mt-2">
+                        <button type="submit" class="btn green text-white"
                           :disabled="updateStudySetValidator(idx) || updatingStudySet">
                           {{ updatingStudySet ? 'Updating' : 'Update' }}
                         </button>
@@ -91,13 +94,13 @@
               </div>
             </Modal>
             <a href="javascript:void(0)" 
-              class="circle circle-md purple ml-1 text-white"
+              class="circle circle-md coral ml-1 text-white"
               @click="deleteStudySetConfirmModal(studyset.id)">del</a>
             <!-- Delete Modal -->
             <Modal width="550px" v-if="selectedStudySet == studyset.id && toggleDeleteStudySetModal">
               <div slot="body">
                 <div class="default-card">
-                  <h4 class="font-weight-bold mb-3">{{ studyset.title }}</h4>
+                  <h2 class="font-weight-bold mb-3">{{ studyset.title }}</h2>
                   <p class="text-muted">
                     You are about to delete this study set. No one will be able to access this study set ever again.
                   </p>
