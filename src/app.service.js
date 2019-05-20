@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'https://flashcards-backend.herokuapp.com/api/v1'
+axios.defaults.baseURL = 'https://stickifybeta.herokuapp.com/api/v1'
 
 axios.interceptors.request.use(function (config) {
   const token = localStorage.getItem('token')
