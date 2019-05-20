@@ -1,22 +1,22 @@
 <template>
-  <div class="top-nav bg-white fixed-top">
+  <div class="dark-purple top-nav fixed-top">
     <div class="row justify-content-between bootstrap-nav">
-      <div class="col-auto align-self-center px-0">
-        <h3 class="mb-0 font-weight-bold">
-          <router-link exact :to="{ name: 'home' }" class="brand">
+      <div class="col-auto"></div>
+      <div class="col-auto align-self-center px-0 text-center">
+        <h1 class="mb-0">
+          <router-link exact :to="{ name: 'home' }" class="font-weight-lighter text-white">
             Stickify
           </router-link>
-        </h3>
+        </h1>
       </div>
       <div class="col-auto align-self-center px-0">
         <span v-if="isAuthenticated">
           <router-link exact 
             :to="{ name: 'user', params: {id: userId} }"
-            class="mr-2 font-weight-bold">my Study Sets</router-link>
-          <a href="javascript:void(0)" @click="logout" class="ml-2 font-weight-bold">logout</a>
+            class="circle circle-md purple text-white">mya</router-link>
         </span>
         <span v-else>
-          <router-link :to="{ name: 'login' }" class="font-weight-bold">Log In
+          <router-link :to="{ name: 'login' }" class="circle circle-md purple text-white">Hi
           </router-link>
         </span>
       </div>
@@ -24,21 +24,11 @@
   </div>
 </template>
 <script>
-  import { mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     computed: {
       ...mapGetters(['userId','isAuthenticated']),
-    },
-    methods: {
-      ...mapActions({
-        logout: 'logout'
-      }),
-      logout () { 
-        this.$store.dispatch('logout').then(() => { 
-          this.$router.push('/login')
-        })
-      },
     }
   }
 </script>

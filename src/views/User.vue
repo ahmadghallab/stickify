@@ -1,11 +1,15 @@
 <template>
-  <div>
+  <div class="wrapper">
     <Loader v-if="retrieveUserLoader" />
     <div class="default-card fade-up" v-else>
-      <h2 class="font-weight-bold">{{ username }}</h2>
-      <p class="text-muted mb-0">
-        {{ studysets.length ? studysets.length + ' studyset' : 'No studysets yet' }}
+      <h1 class="font-weight-lighter">{{ username }}</h1>
+      <p class="text-muted font-weight-light mb-0">
+        {{ studysets.length ? studysets.length + ' studysets' : 'No studysets yet' }}
       </p>
+      <div class="mt-4" v-if="authorized">
+        <a href="javascript:void(0)" class="circle circle-md purple text-white mr-1">edit</a>
+        <a href="javascript:void(0)" class="circle circle-md purple-outline text-white ml-1" @click="logout">quit</a>
+      </div>
     </div>
     <Loader v-if="listStudySetsLoader" />
     <div class="fade-up" v-else>
@@ -23,7 +27,7 @@
                   placeholder="New Study Set; Subject, chapter, unit">
               </div>
               <div class="col-12">
-                <button type="submit" class="btn green text-white" :disabled="newStudySetValidator || creatingStudySet">
+                <button type="submit" class="btn purple text-white" :disabled="newStudySetValidator || creatingStudySet">
                   {{ creatingStudySet ? 'Creating' : 'Create' }}
                 </button>
               </div>
@@ -40,22 +44,22 @@
         v-bind:key="idx">
         <div class="row justify-content-between">
           <div class="col align-self-center">
-            <router-link :to="{ name: 'flashcards', params: {id: studyset.id} }">
-              <h3 class="font-weight-bold">{{ studyset.title }}</h3>
-              <p class="mb-0 text-muted">55 term</p>
+            <router-link :to="{ name: 'studyset', params: {id: studyset.id} }">
+              <h2 class="font-weight-lighter">{{ studyset.title }}</h2>
+              <p class="mb-0 font-weight-light text-muted">55 term</p>
             </router-link>
           </div>
           <div class="col-auto align-self-center" v-if="authorized">
             <a href="javascript:void(0)" 
-              class="circle circle-md coral mr-1 text-white"
+              class="circle circle-md purple mr-1 text-white"
               @click="updateStudySetModal(studyset.id)">edit</a>
             <!-- Edit Modal -->
             <Modal v-if="selectedStudySet == studyset.id && toggleUpdateStudySetModal">
               <div slot="header">
-                <div class="card__header blue">
+                <div class="card__header purple">
                   <div class="row justify_content-between">
                     <div class="col align-self-center">
-                      <h4 class="mb-0 text-white font-weight-bold">Edit Study Set</h4>
+                      <h2 class="mb-0 text-white font-weight-lighter">Edit Study Set</h2>
                     </div>
                     <div class="col-auto align-self-center">
                       <a href="javascript:void(0)" 
@@ -83,7 +87,7 @@
                           autocomplete="off" placeholder="Study Set Title">
                       </div>
                       <div class="col-12 mt-2">
-                        <button type="submit" class="btn green text-white"
+                        <button type="submit" class="btn purple text-white"
                           :disabled="updateStudySetValidator(idx) || updatingStudySet">
                           {{ updatingStudySet ? 'Updating' : 'Update' }}
                         </button>
@@ -94,25 +98,23 @@
               </div>
             </Modal>
             <a href="javascript:void(0)" 
-              class="circle circle-md coral ml-1 text-white"
+              class="circle circle-md purple-outline ml-1 text-white"
               @click="deleteStudySetConfirmModal(studyset.id)">del</a>
             <!-- Delete Modal -->
             <Modal width="550px" v-if="selectedStudySet == studyset.id && toggleDeleteStudySetModal">
               <div slot="body">
-                <div class="default-card">
-                  <h2 class="font-weight-bold mb-3">{{ studyset.title }}</h2>
-                  <p class="text-muted">
+                <div class="default-card pxy-custom">
+                  <h1 class="font-weight-lighter mb-4">{{ studyset.title }}</h1>
+                  <p class="font-weight-light text-muted">
                     You are about to delete this study set. No one will be able to access this study set ever again.
                   </p>
                   <p class="font-weight-bold my-4">Are you absolutely positive? There's no undo.</p>
-                  <div class="text-center">
-                    <button @click="deleteStudySet(idx)"
-                      class="btn red btn-lg btn-block text-white mb-3" :disabled="deletingStudySet">
-                      {{ deletingStudySet ? 'Deleting' : 'Yes, delete' }}
-                    </button>
-                    <a href="javascript:void(0)" @click="toggleDeleteStudySetModal = false"
-                      class="font-weight-bold">Cancel</a>
-                  </div>
+                  <button type="button" @click="deleteStudySet(idx)"
+                    class="btn purple-outline mr-1" :disabled="deletingStudySet">
+                    {{ deletingStudySet ? 'Deleting' : 'Yes, delete' }}</button>
+                  <button type="button"
+                    class="btn purple text-white ml-1" 
+                    @click="toggleDeleteStudySetModal = false">No, cancel</button>
                 </div>
               </div>
             </Modal>
@@ -126,7 +128,7 @@
 import appService from '../app.service.js'
 import Loader from '../components/Loader.vue'
 import Modal from '../components/Modal.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   components: {
@@ -163,6 +165,14 @@ export default {
     },
   },
   methods: {
+    ...mapActions({
+      logout: 'logout'
+    }),
+    logout () { 
+      this.$store.dispatch('logout').then(() => { 
+        this.$router.push('/login')
+      })
+    },
     listUserStudySets () {
       appService.listUserStudySets(this.id).then(data => {
         this.studysets = data.results

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="align-self-center">
   <div class="circle-spinner"></div>
 </div>
 </template>

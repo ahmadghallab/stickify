@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="wrapper">
     <div class="row justify-content-center">
       <div class="col-md-8 fade-up">
         <transition name="card-slide-right" mode="out-in">
           <div v-if="toggleSigninSignup" key="1">
-            <div class="default-card red text-white" v-if="userNotLoggedIn">
-              <h6 class="mb-0 font-weight-bold">Your credentials are incorrect</h6>
+            <div class="default-card alert-danger" v-if="userNotLoggedIn">
+              <h2 class="mb-0 font-weight-lighter">Your credentials are incorrect</h2>
             </div>
             <div class="default-card">
               <form v-on:submit.prevent="login()">
@@ -28,7 +28,7 @@
                       id="loginPassword">
                   </div>
                   <div class="form-group col-12">
-                    <button type="submit" class="btn green text-white" :disabled="loginValidator || loggingIn">{{ loggingIn ? 'Logging' : 'Login' }}</button>
+                    <button type="submit" class="btn purple text-white" :disabled="loginValidator || loggingIn">{{ loggingIn ? 'Logging' : 'Login' }}</button>
                   </div>
                   <div class="col-12">
                     <a href="javascript:void(0)" 
@@ -42,8 +42,8 @@
           </div>
           <div key="2" v-else>
             <div class="default-card">
-              <div class="default-card red text-white" v-if="accountNotCreated">
-                <h6 class="mb-0 font-weight-bold">Account not created</h6>
+              <div class="default-card alert-danger" v-if="accountNotCreated">
+                <h1 class="mb-0 font-weight-lighter">Account not created</h1>
               </div>
               <form v-on:submit.prevent="createUser()">
                 <div class="form-row">
@@ -82,7 +82,7 @@
                       id="newUserPasswordConfirm">
                   </div>
                   <div class="form-group col-12">
-                    <button type="submit" class="btn green text-white" :disabled="createUserValidator || creatingUser" @click="createUser()">{{ creatingUser ? 'Creating' : 'Create' }}</button>
+                    <button type="submit" class="btn purple text-white" :disabled="createUserValidator || creatingUser" @click="createUser()">{{ creatingUser ? 'Creating' : 'Create' }}</button>
                   </div>
                   <div class="col-12">
                     <a href="javascript:void(0)" 
@@ -137,8 +137,8 @@ export default {
         password: this.loginPassword
       })
       .then(() => {
-        const redirect = `user/${this.userId}`
-        this.$router.push(redirect)
+        const purpleirect = `user/${this.userId}`
+        this.$router.push(purpleirect)
       })
       .catch(() => {
         this.userNotLoggedIn = true

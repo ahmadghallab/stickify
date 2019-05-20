@@ -1,4 +1,5 @@
 <template>
+<div class="wrapper">
   <div class="row justify-content-between">
     <div class="col align-self-center">
       <h1 class="mb-3 font-weight-bold">Welcome</h1>
@@ -10,4 +11,5 @@
       <img alt="Decoration" src="../assets/right.png" width="200">
     </div>
   </div>
+</div>
 </template>

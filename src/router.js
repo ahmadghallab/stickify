@@ -6,6 +6,7 @@ import store from './store';
 import Home from './views/Home.vue'
 import Login from './views/Login.vue'
 import User from './views/User.vue'
+import StudySet from './views/StudySet.vue'
 import Flashcards from './views/Flashcards.vue'
 import Test from './views/Test.vue'
 
@@ -29,6 +30,11 @@ const router = new Router({
       path: '/user/:id',
       name: 'user',
       component: User
+    },
+    {
+      path: '/studyset/:id',
+      name: 'studyset',
+      component: StudySet
     },
     {
       path: '/studyset/:id/flashcards',
