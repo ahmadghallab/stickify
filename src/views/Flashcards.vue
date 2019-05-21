@@ -2,14 +2,14 @@
 <div class="flashcards-wrapper">
   <div class="flashcard d-flex justify-content-center white-space">
     <Loader v-if="listCardsLoader" />
-    <div v-else-if="cards.length" class="fade-up align-self-center text-center">
+    <div v-else-if="cards.length" class="fade-up align-self-center">
       <transition name="card-slide-right" mode="out-in">
         <div :key="cardIdx">
-          <div v-if="end">
+          <div v-if="end" class="text-center">
             <svg width="100" viewBox="0 0 72 72">
               <path fill="#6E8189" d="M51.066 8.161c-1.554 2.688-2.037 6.505-2.037 6.505s3.063-2.327 4.615-5.016c2.514-4.354-.066-5.843-2.578-1.489zm-7.412-2.39c-.002 3.104 1.486 6.652 1.486 6.652s1.49-3.549 1.492-6.652c.001-5.028-2.98-5.028-2.978 0zm14.242 6.504c-2.689 1.551-5.016 4.615-5.016 4.615s3.816-.484 6.505-2.036c4.355-2.514 2.865-5.094-1.489-2.579z"></path><path fill="#BD8700" d="M41.453 20.017c-.637-1.689-4.455-.704-3.934 3.934.558 4.939 1.596 5.424.596 8.355L19.006 13.197c-3.491-3.492-8.427 1.443-4.94 4.936l-1.93-1.93c-3.549-3.55-8.486 1.389-4.938 4.939l.906.908c-3.443-3.445-8.383 1.494-4.936 4.938l5.908 5.91c-3.422-3.422-8.361 1.516-4.937 4.938l18.082 18.113c5.915 5.914 14.565 9.287 22.32 1.533 12.93-12.928 1.668-24.842-3.088-37.465z"></path><path fill="#FDCA47" d="M43.255 20.857c.589 5.21 1.683 5.721.629 8.814l-3.379-2.874L19.904 47.4l7.214 7.215c6.241 6.24 15.366 9.798 23.547 1.617 13.639-13.639 1.759-26.208-3.26-39.525-.672-1.782-4.7-.742-4.15 4.15z"></path><path fill="#CC9200" d="M43.896 17.285c1.004-.6 2.137-.407 2.467.465 4.934 13.095 16.488 25.467 3.902 38.845.135-.127.27-.232.401-.364 13.637-13.637 1.757-26.206-3.262-39.523-.455-1.204-2.438-1.116-3.508.577z"></path><path fill="#FDCA47" d="M18.513 14.722L37.632 33.84l4.946-4.948L23.724 9.513c-3.685-3.686-8.894 1.524-5.211 5.209z"></path><path fill="#CC9200" d="M17.884 9.925c1.322-.893 3.2-.967 4.796.627L42.838 30.71l1.042-1.041L23.722 9.51c-2.091-2.091-4.669-1.318-5.838.415z"></path><path fill="#FDCA47" d="M11.266 17.894l22.197 22.197 5.211-5.21-22.198-22.197c-3.745-3.746-8.954 1.464-5.21 5.21z"></path><path fill="#CC9200" d="M10.592 13.051c1.324-.889 3.22-.949 4.838.672l16.991 16.99 1.042-1.041-16.991-16.991c-2.124-2.124-4.714-1.367-5.88.37z"></path><path fill="#FDCA47" d="M7.015 24.061l20.197 20.198 5.209-5.21-20.198-20.197c-3.633-3.634-8.843 1.576-5.208 5.209z"></path><path fill="#FDCA47" d="M8.041 35.506l16.044 16.046 5.21-5.209L13.25 30.296c-3.611-3.611-8.821 1.599-5.209 5.21z"></path><path fill="#CC9200" d="M6.422 19.303c1.325-.89 3.221-.949 4.84.671l15.95 15.949 1.041-1.042L11.96 18.625c-2.212-2.368-4.371-1.058-5.538.678zm1.043 11.462c1.323-.89 3.218-.95 4.84.671l10.738 10.739 1.041-1.041-10.968-10.959c-2.127-2.125-4.485-1.147-5.651.59z"></path><path fill="#CC9200" d="M25.126 40.091s-1.137 1.137-1.734 4.516c0 0-.033-3.442-2.464-5.871 3.062 2.492 4.198 1.355 4.198 1.355zm4.58-5.842s-1.988 1.424-2.842 3.411c0 0 .568-2.272-1.419-4.832 2.555 1.99 4.261 1.421 4.261 1.421zm5.319-5.098s-1.917.354-3.385 2.865c0 0 .638-2.203-1.444-4.287 2.082 2.084 4.829 1.422 4.829 1.422z"></path>
             </svg>
-            <h1 class="font-weight-lighter mt-3">Nice work</h1>
+            <h3 class="font-weight-bold mt-3">Nice work</h3>
             <p class="mb-4 text-muted font-weight-light">You just studied {{ cards.length }} terms. Are you ready for a quick test?</p>
             <span class="text-muted font-italic"></span>
             <router-link :to="{ name: 'test', params: {id: id} }" 
@@ -20,32 +20,32 @@
           </div>
           <div v-else>
             <transition name="card-slide-up" mode="out-in">
-              <h1 class="display-4 text-center mb-0 font-weight-lighter" 
+              <h3 class="text-center mb-0 font-weight-bold" 
                 v-if="flipTermDefinition" 
                 key="1">{{ cards[cardIdx].term }}
-              </h1>
-              <h1 class="font-weight-lighter mb-0 text-center display-4"  
+              </h3>
+              <h3 class="mb-0"  
                 key="2" 
                 v-html="formatText(cards[cardIdx].definition)" v-else>
-              </h1>
+              </h3>
             </transition>
           </div>
         </div>
       </transition>
     </div>
     <div v-else>
-      <h1 class="mb-0 font-weight-lighter">No cards yet</h1>
+      <h3 class="mb-0 font-weight-bold">No cards yet</h3>
     </div>
   </div>
   <div class="bg-white fixed-bottom fade-up">
       <div class="row justify-content-between bootstrap-nav">
         <div class="col-auto align-self-center">
           <a href="javascript:void(0)"
-            class="circle circle-md purple align-middle"
+            class="circle circle-md purple align-middle mr-1"
             v-bind:class="{'inactive': start}"
             @click="changeCard('prev')"
             v-shortkey="['arrowleft']" @shortkey="changeCard('prev')">
-            <svg class="icon" viewBox="0 0 512 512">
+           <svg class="icon" viewBox="0 0 512 512">
               <g>
                 <path d="M45.833,270.143c-7.797-7.798-7.797-20.487,0.018-28.302L221.145,66.114c7.8-7.82,7.785-20.484-0.035-28.285
                   c-7.821-7.8-20.485-7.785-28.286,0.035L17.549,213.572c-23.395,23.395-23.395,61.462-0.018,84.839l175.293,175.725
@@ -55,6 +55,24 @@
               <g>
                 <path d="M491.999,235.999H128.98c-11.047,0-20.001,8.954-20.001,20.001s8.954,20.001,20.001,20.001h363.018
                   c11.047,0,20.001-8.954,20.001-20.001S503.045,235.999,491.999,235.999z"/>
+              </g>
+            </svg>
+          </a>
+          <a href="javascript:void(0)"
+            class="circle circle-md purple align-middle ml-1"
+            v-bind:class="{'inactive': end}"
+            @click="changeCard('next')"
+            v-shortkey="['arrowright']" @shortkey="changeCard('next')">
+            <svg class="icon" viewBox="0 0 512 512">
+              <g>
+                <path d="M494.469,213.589L319.176,37.864c-7.802-7.821-20.465-7.835-28.286-0.035c-7.82,7.801-7.836,20.465-0.035,28.285
+                  l175.311,175.744c7.797,7.798,7.797,20.487-0.018,28.302L290.855,445.886c-7.8,7.82-7.785,20.484,0.035,28.285
+                  c3.904,3.894,9.016,5.84,14.126,5.84c5.126,0,10.253-1.959,14.161-5.876l175.275-175.707
+                  C517.846,275.033,517.846,236.966,494.469,213.589z"/>
+              </g>
+              <g>
+                <path d="M383.019,235.999H20.001C8.954,235.999,0,244.954,0,256s8.954,20.001,20.001,20.001h363.018
+                  c11.047,0,20.001-8.954,20.001-20.001S394.066,235.999,383.019,235.999z"/>
               </g>
             </svg>
           </a>
@@ -108,26 +126,6 @@
                   l30.82-53.342c0.112-0.187,0.221-0.376,0.327-0.567l25.64-44.378C307.017,164.391,369.352,129,436.778,129h24.406l-57.268,56.8
                   c-7.842,7.778-7.895,20.441-0.116,28.284c3.911,3.942,9.054,5.916,14.201,5.916c5.09,0,10.184-1.932,14.083-5.8l62.162-61.653
                   C505.695,141.192,512,126.081,512,110S505.695,78.809,494.246,67.453z"/>
-              </g>
-            </svg>
-          </a>
-        </div>
-        <div class="col-auto align-self-center">
-          <a href="javascript:void(0)"
-            class="circle circle-md purple align-middle"
-            v-bind:class="{'inactive': end}"
-            @click="changeCard('next')"
-            v-shortkey="['arrowright']" @shortkey="changeCard('next')">
-            <svg class="icon" viewBox="0 0 512 512">
-              <g>
-                <path d="M494.469,213.589L319.176,37.864c-7.802-7.821-20.465-7.835-28.286-0.035c-7.82,7.801-7.836,20.465-0.035,28.285
-                  l175.311,175.744c7.797,7.798,7.797,20.487-0.018,28.302L290.855,445.886c-7.8,7.82-7.785,20.484,0.035,28.285
-                  c3.904,3.894,9.016,5.84,14.126,5.84c5.126,0,10.253-1.959,14.161-5.876l175.275-175.707
-                  C517.846,275.033,517.846,236.966,494.469,213.589z"/>
-              </g>
-              <g>
-                <path d="M383.019,235.999H20.001C8.954,235.999,0,244.954,0,256s8.954,20.001,20.001,20.001h363.018
-                  c11.047,0,20.001-8.954,20.001-20.001S394.066,235.999,383.019,235.999z"/>
               </g>
             </svg>
           </a>

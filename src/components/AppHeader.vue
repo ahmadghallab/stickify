@@ -3,11 +3,11 @@
     <div class="row justify-content-between bootstrap-nav">
       <div class="col-auto"></div>
       <div class="col-auto align-self-center px-0 text-center">
-        <h1 class="mb-0">
-          <router-link exact :to="{ name: 'home' }" class="font-weight-lighter text-white">
+        <h4 class="mb-0">
+          <router-link exact :to="{ name: 'home' }" class="font-weight-bold text-white">
             Stickify
           </router-link>
-        </h1>
+        </h4>
       </div>
       <div class="col-auto align-self-center px-0">
         <span v-if="isAuthenticated">

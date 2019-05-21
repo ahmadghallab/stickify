@@ -2,8 +2,8 @@
   <div class="wrapper">
     <Loader v-if="retrieveUserLoader" />
     <div class="default-card fade-up" v-else>
-      <h1 class="font-weight-lighter">{{ username }}</h1>
-      <p class="text-muted font-weight-light mb-0">
+      <h4 class="font-weight-bold">{{ username }}</h4>
+      <p class="text-muted mb-0">
         {{ studysets.length ? studysets.length + ' studysets' : 'No studysets yet' }}
       </p>
       <div class="mt-4" v-if="authorized">
@@ -45,8 +45,8 @@
         <div class="row justify-content-between">
           <div class="col align-self-center">
             <router-link :to="{ name: 'studyset', params: {id: studyset.id} }">
-              <h2 class="font-weight-lighter">{{ studyset.title }}</h2>
-              <p class="mb-0 font-weight-light text-muted">55 term</p>
+              <h4 class="font-weight-bold">{{ studyset.title }}</h4>
+              <p class="mb-0 text-muted">55 term</p>
             </router-link>
           </div>
           <div class="col-auto align-self-center" v-if="authorized">
@@ -59,7 +59,7 @@
                 <div class="card__header purple">
                   <div class="row justify_content-between">
                     <div class="col align-self-center">
-                      <h2 class="mb-0 text-white font-weight-lighter">Edit Study Set</h2>
+                      <h4 class="mb-0 text-white font-weight-bold">Edit Study Set</h4>
                     </div>
                     <div class="col-auto align-self-center">
                       <a href="javascript:void(0)" 
@@ -103,18 +103,19 @@
             <!-- Delete Modal -->
             <Modal width="550px" v-if="selectedStudySet == studyset.id && toggleDeleteStudySetModal">
               <div slot="body">
-                <div class="default-card pxy-custom">
-                  <h1 class="font-weight-lighter mb-4">{{ studyset.title }}</h1>
-                  <p class="font-weight-light text-muted">
+                <div class="default-card">
+                  <h4 class="font-weight-bold mb-4">{{ studyset.title }}</h4>
+                  <p class=" text-muted">
                     You are about to delete this study set. No one will be able to access this study set ever again.
                   </p>
                   <p class="font-weight-bold my-4">Are you absolutely positive? There's no undo.</p>
-                  <button type="button" @click="deleteStudySet(idx)"
-                    class="btn purple-outline mr-1" :disabled="deletingStudySet">
-                    {{ deletingStudySet ? 'Deleting' : 'Yes, delete' }}</button>
-                  <button type="button"
-                    class="btn purple text-white ml-1" 
-                    @click="toggleDeleteStudySetModal = false">No, cancel</button>
+                  <div class="text-center">
+                    <button type="button" @click="deleteStudySet(idx)"
+                      class="btn btn-block btn-lg purple text-white mb-3" :disabled="deletingCard">
+                    {{ deletingCard ? 'Deleting' : 'Yes, delete' }}</button>
+                    <a href="javascript:void(0)" class="font-weight-bold"
+                      @click="toggleDeleteStudySetModal = false">No, cancel</a>
+                  </div>
                 </div>
               </div>
             </Modal>

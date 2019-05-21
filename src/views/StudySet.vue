@@ -2,8 +2,8 @@
   <div class="wrapper">
     <Loader v-if="retrieveStudySetLoader" />
     <div class="default-card fade-up" v-else>
-      <h1 class="font-weight-lighter">{{ studySetTitle }}</h1>
-      <p class="text-muted font-weight-light mb-0">
+      <h4 class="font-weight-bold">{{ studySetTitle }}</h4>
+      <p class="text-muted mb-0">
         {{ cards.length ? cards.length + ' term' : 'No terms yet' }}
       </p>
       <div class="mt-3">
@@ -54,8 +54,8 @@
           v-bind:key="index">
           <div class="row justify-content-between">
             <div class="col align-self-center">
-              <h2 class="font-weight-lighter">{{ card.term }}</h2>
-              <p class="font-weight-light text-muted mb-0" v-html="formatText(card.definition)"></p>
+              <h4 class="font-weight-bold">{{ card.term }}</h4>
+              <p class=" text-muted mb-0" v-html="formatText(card.definition)"></p>
             </div>
             <div class="col-auto align-self-center" v-if="authorized">
               <a href="javascript:void(0)" 
@@ -72,7 +72,7 @@
               <div class="card__header purple">
                 <div class="row justify_content-between">
                   <div class="col align-self-center">
-                    <h2 class="mb-0 text-white font-weight-lighter">Edit Card</h2>
+                    <h4 class="mb-0 text-white font-weight-bold">Edit Card</h4>
                   </div>
                   <div class="col-auto align-self-center">
                     <a href="javascript:void(0)" 
@@ -122,18 +122,19 @@
           <!-- Delete Card Modal -->
           <Modal width="550px" v-if="toggleDeleteCardModal && selectedCard == card.id">
             <div slot="body">
-              <div class="default-card pxy-custom">
-                <h1 class="font-weight-lighter mb-4">{{ card.term }}</h1>
-                <p class="text-muted font-weight-light">
+              <div class="default-card">
+                <h4 class="font-weight-bold mb-4">{{ card.term }}</h4>
+                <p class="text-muted ">
                   You are about to delete this card. No one will be able to access this card ever again.
                 </p>
                 <p class="font-weight-bold my-4">Are you absolutely positive? There's no undo.</p>
-                <button type="button" @click="deleteCard(index)"
-                  class="btn purple-outline mr-1" :disabled="deletingCard">
-                  {{ deletingCard ? 'Deleting' : 'Yes, delete' }}</button>
-                <button type="button"
-                  class="btn purple text-white ml-1" 
-                  @click="toggleDeleteCardModal = false">No, cancel</button>
+                <div class="text-center">
+                  <button type="button" @click="deleteCard(index)"
+                    class="btn btn-block btn-lg purple text-white mb-3" :disabled="deletingCard">
+                    {{ deletingCard ? 'Deleting' : 'Yes, delete' }}</button>
+                  <a href="javascript:void(0)" class="font-weight-bold"
+                    @click="toggleDeleteCardModal = false">No, cancel</a>
+                </div>
               </div>
             </div>
           </Modal>
