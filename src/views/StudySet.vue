@@ -179,15 +179,11 @@ export default {
     },
     newCardValidator () {
       return (this.cardTerm 
-        && this.cardDefinition 
-        && this.cardTerm.length < 50
-        && this.cardDefinition.length < 250) ? false : true
+        && this.cardDefinition) ? false : true
     },
     updateCardValidator () {
       return index => (this.cards[index].term 
-        && this.cards[index].definition
-        && this.cards[index].term.length < 50
-        && this.cards[index].definition.length < 250) ? false : true
+        && this.cards[index].definition) ? false : true
     },
   },
   methods: {
